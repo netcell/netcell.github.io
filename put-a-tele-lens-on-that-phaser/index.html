@@ -87,6 +87,11 @@
             	<a href="/">Blog</a>
             </li>
         
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="/page/about/">About</a>
+            </li>
+        
     </ul>
     
     
@@ -132,20 +137,29 @@
           <time class="post-date" datetime="2015-03-14T00:00:00Z">
             Mar 14, 2015
           </time>
+          <span class="middotDivider"></span>
+          2 min read
         
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/es6/">#es6</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javaScript</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
          
         </section>
@@ -153,30 +167,20 @@
 
     <section class="post-content">
     
-    <div class="excerpt">I’ve been working with Phaser for a while now and I feel comfortable with the framework. However, recently I was making a game where need the camera to zoom in and out. That’s when I realized Phaser Camera does not have zoom functionality!!!</div>
+    <div class="excerpt">I realized Phaser.Camera does not have zoom functionality, so I decided to build another camera that does.</div>
     
 
       
 
 <p><strong>This article was written based on Phaser 2.3, some of the information regarding the framework might not be applicable on later version of Phaser.</strong></p>
 
-<p>I’ve been working with <a href="http://phaser.io">Phaser</a> for a while now and I feel comfortable with the framework. Its API is pretty decent and simple, very easy to learn and performs well on mobile devices. It was smooth and happy for me.
+<p>I’ve been working with the HTML5 game engine <a href="http://phaser.io">Phaser</a>. Its API is pretty decent and simple, very easy to learn and performs well on mobile devices. It was <em>smooth</em> and happy for me.</p>
+
+<p>However, recently while making an top-down action JRPG game, I wished to utilize camera zooming and movement in order to deliver better effect and experience. That’s when I realized <code>Phaser.Camera</code> <em>does not have zoom functionality!</em>
 
 <figure >
     
-        <img src="https://cdn-images-2.medium.com/max/800/1*9BZY9WvFkXcqcL7VaWUpnQ.jpeg" />
-    
-    
-</figure>
-</p>
-
-<hr />
-
-<p>However, recently I was making an action/JRPG game. I wish to utilize camera movement/zooming in order to create better effect and experience. That’s when I realized <em>Phaser Camera does not have zoom functionality!!!</em>
-
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*ugmDwJ--aLIGUkJfvghjng.jpeg" />
+        <img src="/img/1-ugmDwJ--aLIGUkJfvghjng.jpeg" />
     
     
     <figcaption>
@@ -187,34 +191,28 @@
 </figure>
 </p>
 
-<p>So I <a href="https://www.google.com/search?q=phaser+camera+zoom">googled</a> for some work around but none of the implementations looks cool to me. Their codes look just…messy and complicated. I just thought, why does it have to be complicated? So I decided to make my hands do some dirty work.
-
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*bm8JsSkJElRo8FQUw_ulJQ.png" />
-    
-    
-</figure>
-</p>
+<p>So I <a href="https://www.google.com/search?q=phaser+camera+zoom">googled</a> for some work around but the implementations are too messy and complicated for me. So I decided to make a DIY project.</p>
 
 <hr />
 
-<p>My way is simple: <em>make a group and throw what ever I want to see on the camera in it and scale it when I wanna zoom the camera.</em></p>
+<p>My method is simple:</p>
 
-<p>So this is what I came up with:</p>
-
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span>    <span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
-<span class="lineno"> 2 </span>        <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno"> 3 </span>            <span class="p">...</span>
-<span class="lineno"> 4 </span>            <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="lineno"> 5 </span>            <span class="p">...</span>
-<span class="lineno"> 6 </span>        <span class="p">}</span>
-<span class="lineno"> 7 </span>        <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 8 </span>            <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span>
-<span class="lineno"> 9 </span>        <span class="p">}</span>
-<span class="lineno">10 </span>    <span class="p">}</span>
+<ol>
+<li>Make a <code>Phaser.Group</code>, call it <code>Camera</code>.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span>    <span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
+<span class="lineno">2 </span>    <span class="p">}</span>
 </code></pre></div>
+</li>
+<li>Throw what I want to see on in it.</li>
+<li>Scale it when I want to zoom.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">2 </span>        <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span>
+<span class="lineno">3 </span>    <span class="p">}</span>
+</code></pre></div>
+</li>
+</ol>
 
+<hr />
 
 <blockquote>
 <p>Aha, ain&rsquo;t that easy?</p>
@@ -226,28 +224,17 @@
 <p>Not so fast.</p>
 </blockquote>
 
-<p>
+<p>One problem surfaced ist that when zoomed out and panned, the camera panned <em>outside</em> of the group, like in the picture bellow.
+
 <figure >
     
-        <img src="https://cdn-images-2.medium.com/max/800/1*VJMB7ZisBUqsrMWEOkfU1g.png" />
+        <img src="/img/1-bqUaZHg_1FCVjBqJI1ws9Q.png" />
     
     
 </figure>
 </p>
 
-<hr />
-
-<p>When zooms out and pans, the camera pans outside of the group.
-
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*bqUaZHg_1FCVjBqJI1ws9Q.png" />
-    
-    
-</figure>
-</p>
-
-<p>That is because as default, the camera bounds is set to the size of the world, when the group scales, the bounds should also be scaled and repositioned.</p>
+<p>The problem is: by default, the bounds of <code>game.camera</code> is set to the size of <code>game.world</code>. While our group is originally identical to <code>game.world</code>, when the group is scaled, <code>game.camera.bounds</code> should also be scaled and repositioned accordingly.</p>
 
 <p><div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span>    <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>        <span class="p">...</span>
@@ -266,23 +253,19 @@
 </code></pre></div>
 </p>
 
-<p>Finally, I added the ability to zoom slowly, because people like it smooth.
+<p>Finally, I added some <code>tween</code> to make the zoom smooth.
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">,</span> <span class="nx">duration</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>        <span class="p">...</span>
-<span class="lineno"> 3 </span>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">duration</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 4 </span>            <span class="p">...</span>
-<span class="lineno"> 5 </span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-<span class="lineno"> 6 </span>            <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">cameraBounds</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
-<span class="lineno"> 7 </span>                <span class="nx">x</span>      <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span>  <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<span class="lineno"> 8 </span>                <span class="nx">y</span>      <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-<span class="lineno"> 9 </span>                <span class="nx">width</span>  <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span>  <span class="o">*</span> <span class="nx">scale</span><span class="p">,</span>
-<span class="lineno">10 </span>                <span class="nx">height</span> <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="nx">scale</span>
-<span class="lineno">11 </span>            <span class="p">},</span> <span class="nx">duration</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
-<span class="lineno">12 </span>            <span class="k">return</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
-<span class="lineno">13 </span>                <span class="nx">x</span><span class="o">:</span> <span class="nx">scale</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">scale</span>
-<span class="lineno">14 </span>            <span class="p">},</span> <span class="nx">duration</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
-<span class="lineno">15 </span>        <span class="p">}</span>
-<span class="lineno">16 </span>    <span class="p">}</span>
+<span class="lineno"> 3 </span>        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">cameraBounds</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
+<span class="lineno"> 4 </span>            <span class="nx">x</span>      <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span>  <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<span class="lineno"> 5 </span>            <span class="nx">y</span>      <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<span class="lineno"> 6 </span>            <span class="nx">width</span>  <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span>  <span class="o">*</span> <span class="nx">scale</span><span class="p">,</span>
+<span class="lineno"> 7 </span>            <span class="nx">height</span> <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="nx">scale</span>
+<span class="lineno"> 8 </span>        <span class="p">},</span> <span class="nx">duration</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+<span class="lineno"> 9 </span>        <span class="k">return</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
+<span class="lineno">10 </span>            <span class="nx">x</span><span class="o">:</span> <span class="nx">scale</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="nx">scale</span>
+<span class="lineno">11 </span>        <span class="p">},</span> <span class="nx">duration</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+<span class="lineno">12 </span>    <span class="p">}</span>
 </code></pre></div>
 </p>
 
@@ -297,42 +280,16 @@
 
 <h1 id="so-what-s-next:407f38d34d40e6fc5a566a60411994f4">SO WHAT&rsquo;S NEXT?</h1>
 
-<p>See how smoothly the camera is chasing the main character in the video? Check it out in <a href="http://anhnt.ninja/2015/08/19/a-stalker-on-phaser/">A Stalker on Phaser</a> and <a href="http://">stay tune</a>.</p>
+<p>See how smoothly the camera is chasing the main character in the video? Check it out in <a href="/a-stalker-on-phaser/">A Stalker on Phaser</a> and <a href="http://eepurl.com/bYfnUP">stay tune</a>.</p>
 
     </section>
 
 
   <footer class="post-footer">
 
-
-    
-    <figure class="author-image">
-        <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
-    </figure>
-    
-
-    
-
-
-
-
-
-<section class="author">
-  <h4><a href="http://netcell.github.io/">netcell</a></h4>
-  
-  <p>Developer, jack of all trades and master of some.</p>
-  
-  <div class="author-meta">
-    <span class="author-location icon-location">Hanoi, Vietnam</span>
-    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
-  </div>
-</section>
-
-
-
     
 <section class="share">
-  <h4>Share this post</h4>
+  
   <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Put%20a%20Tele%20Lens%20on%20that%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2fput-a-tele-lens-on-that-phaser%2f"
       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
       <span class="hidden">Twitter</span>
@@ -353,7 +310,7 @@
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
-  var disqus_shortname = 'ntanh';
+  var disqus_shortname = 'netcell';
   var disqus_url = 'http:\/\/netcell.github.io\/put-a-tele-lens-on-that-phaser\/';
   (function() {
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -370,7 +327,32 @@
 </article>
 
 </main>
-    <footer class="site-footer clearfix">
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
         <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
         
     </footer>

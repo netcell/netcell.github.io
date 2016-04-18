@@ -21,7 +21,7 @@
     
     <meta property="og:article:tag" content="es6" />
     
-    <meta property="og:article:tag" content="javaScript" />
+    <meta property="og:article:tag" content="javascript" />
     
     <meta property="og:article:tag" content="phaser" />
     
@@ -87,6 +87,11 @@
             	<a href="/">Blog</a>
             </li>
         
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="/page/about/">About</a>
+            </li>
+        
     </ul>
     
     
@@ -132,20 +137,29 @@
           <time class="post-date" datetime="2015-03-20T00:00:00Z">
             Mar 20, 2015
           </time>
+          <span class="middotDivider"></span>
+          2 min read
         
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/es6/">#es6</a></span>
          
-          <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javaScript</a></span>
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javascript</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
          
+         <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
          
         </section>
@@ -153,72 +167,55 @@
 
     <section class="post-content">
     
-    <div class="excerpt">A stalker doesn’t stick on his target, he keeps distance and quietly follows. That means, when the target moves, he doesn’t move immediately but slowly chase after. Let me remind you: a stalker keeps his distance.</div>
+    <div class="excerpt">Phaser.Camera follow functionality sucks, so I made a stalker out of my own.</div>
     
 
-      <p>On my <a href="/put-a-tele-lens-on-that-phaser/">previous post</a>, I’ve written an easy to use zoomable camera for <a href="http://phaser.io">Phaser</a>. I had it smoothly zoom the camera to any scale I want.
+      <p>On my <a href="/put-a-tele-lens-on-that-phaser/">previous post</a>, I built an enhanced camera for <a href="http://phaser.io">Phaser</a> that can smoothly zoom to any scale I want. At the end of that post, I shown you a demonstration video where the camera does not only zoom, but also follows the character smoothly. Now that&rsquo;s not something Phaser is capable of.</p>
+
+<p>Don’t get me wrong, <code>Phaser.Camera</code> does have follow functionality, but it just sticks the camera on to the entity. That is, in no way, <em>following</em>.</p>
+
+<p>When I hear <em>follow</em>, I think <strong>stalker</strong>.
 
 <figure >
     
-        <img src="https://cdn-images-2.medium.com/max/800/1*XTaGyskWI0j0Kc2D7X2hgA.jpeg" />
+        <img src="/img/1-icCM_IOWF0jN05JYCIpMHg.jpeg" />
     
-    
-    <figcaption>
-        <h4>I feel you, Obama.</h4>
-        
-    </figcaption>
     
 </figure>
 </p>
 
-<p>And then I realized, I wanted everything to be smooth. How about a smooth follow functionality…</p>
+<p>A stalker doesn’t stick on his target, he keeps distance and quietly follows. That means, when the target moves, he doesn’t move immediately but slowly chase after.</p>
 
 <hr />
 
-<p>Don’t get me wrong, Phaser camera does have follow functionality, but it&#8217;s just sticking the camera on to the entity. Seriously, that is, in no way, <em>following</em>. When I hear <em>follow</em>, I think <strong>stalker</strong>.
+<p>I would be using the <code>Camera</code> class <a href="/put-a-tele-lens-on-that-phaser/">(from previous post)</a>. As always, my method is very simple:</p>
 
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*icCM_IOWF0jN05JYCIpMHg.jpeg" />
-    
-    
-</figure>
-</p>
-
-<p>A stalker doesn’t stick on his target, he keeps distance and quietly follows. That means, when the target moves, he doesn’t move immediately but slowly chase after. So I let my hands dirty again.
-
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*bm8JsSkJElRo8FQUw_ulJQ.png" />
-    
-    
-</figure>
-</p>
-
-<hr />
-
-<p>As always, my method is very simple: make an actual stalker and let the camera follow him instead of the target. And this is what I came up with <a href="/put-a-tele-lens-on-that-phaser/">(remember my code from previous post?)</a>
+<ol>
+<li>Make a sprite to act as a <code>stalker</code> and stick the <code>game.camera</code> on him.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
+<span class="lineno">2 </span>   <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">3 </span>       <span class="p">...</span>
+<span class="lineno">4 </span>       <span class="k">this</span><span class="p">.</span><span class="nx">stalker</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+<span class="lineno">5 </span>       <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">);</span>
+<span class="lineno">6 </span>   <span class="p">}</span>
+<span class="lineno">7 </span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>Use <em>arcade physics</em> method <code>moveToObject</code> to let <code>stalker</code> chase <code>target</code>. Of course, if you don&rsquo;t want to use arcade physics, it is possible to write a simple logic for this matter.
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>   <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
 <span class="lineno"> 3 </span>       <span class="p">...</span>
-<span class="lineno"> 4 </span>       <span class="k">this</span><span class="p">.</span><span class="nx">stalker</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
-<span class="lineno"> 5 </span>       <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">);</span>
-<span class="lineno"> 6 </span>       <span class="nx">game</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">);</span>
-<span class="lineno"> 7 </span>   <span class="p">}</span>
-<span class="lineno"> 8 </span>   <span class="nx">follow</span><span class="p">(</span><span class="nx">world</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 9 </span>       <span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+<span class="lineno"> 4 </span>       <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">.</span><span class="nx">enable</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">);</span>
+<span class="lineno"> 5 </span>   <span class="p">}</span>
+<span class="lineno"> 6 </span>   <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno"> 7 </span>       <span class="p">...</span>
+<span class="lineno"> 8 </span>       <span class="kd">var</span> <span class="nx">arcade</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">;</span>
+<span class="lineno"> 9 </span>       <span class="nx">arcade</span><span class="p">.</span><span class="nx">moveToObject</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
 <span class="lineno">10 </span>   <span class="p">}</span>
-<span class="lineno">11 </span>   <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno">12 </span>       <span class="kr">super</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
-<span class="lineno">13 </span>       <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno">14 </span>           <span class="kd">var</span> <span class="nx">arcade</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">physics</span><span class="p">.</span><span class="nx">arcade</span><span class="p">;</span>
-<span class="lineno">15 </span>           <span class="kd">var</span> <span class="nx">stalker</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">;</span>
-<span class="lineno">16 </span>           <span class="nx">arcade</span><span class="p">.</span><span class="nx">moveToObject</span><span class="p">(</span><span class="nx">stalker</span><span class="p">,</span> <span class="nx">target</span><span class="p">);</span>
-<span class="lineno">17 </span>       <span class="p">}</span>
-<span class="lineno">18 </span>   <span class="p">}</span>
-<span class="lineno">19 </span><span class="p">}</span>
+<span class="lineno">11 </span><span class="p">}</span>
 </code></pre></div>
-</p>
+</li>
+</ol>
 
 <blockquote>
 <p>Aha, ain’t that easy?</p>
@@ -230,88 +227,43 @@
 <p>Not so fast.</p>
 </blockquote>
 
-<p>
-<figure >
-    
-        <img src="https://cdn-images-2.medium.com/max/800/1*VJMB7ZisBUqsrMWEOkfU1g.png" />
-    
-    
-</figure>
-</p>
-
-<p>Firstly, if the target is in a group, it’s position is relative to that group. The stalker however, doesn’t belong the that group, so he couldn’t possibly know where his target is. So instead of let the stalker follow the target position, I let him follow the target’s GPS position (aka <code>target.world</code>).
+<p>Firstly, if <code>target</code> is in a group, it’s position is relative to that group. The <code>stalker</code> however, doesn’t belong the that <em>exclusive-membersive-only</em> group, so he could not possibly know where his target is. So I let the <code>stalker</code> follow <code>target.world</code> (the absolute position) instead of <code>target.position</code> (the relative position).
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">follow</span><span class="p">(</span><span class="nx">world</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno">2 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">world</span><span class="p">;</span>
 <span class="lineno">3 </span><span class="p">}</span>
 </code></pre></div>
 </p>
 
-<hr />
+<p>Secondly, this only works when <code>stalker</code> is far away from <code>target</code>. The problem is he doesn’t slow down when he is close to <code>target</code> and hence runs pass it. Of course, he realizes that, turns around and runs back, but then again, he moves too fast and runs pass it again.</p>
 
-<p>Secondly, when the stalker is far away from the target, everything works awesome, he chase after the target beautifully. But he doesn’t slow down when he is near the target and runs pass it. He realizes that, and turns around and runs back, but again, he moves too fast and runs pass it again.</p>
-
-<blockquote>
-<p>Let me remind you: a stalker keeps his distance.</p>
-</blockquote>
-
-<p>When he is too close, he would stop:
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno"> 2 </span>    <span class="p">...</span>
-<span class="lineno"> 3 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">safeDistance</span>
-<span class="lineno"> 4 </span>    <span class="p">...</span>
-<span class="lineno"> 5 </span><span class="p">}</span>
-<span class="lineno"> 6 </span><span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
-<span class="lineno"> 7 </span>    <span class="p">...</span>
-<span class="lineno"> 8 </span>    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno"> 9 </span>        <span class="p">...</span>
-<span class="lineno">10 </span>        <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">.</span><span class="nx">position</span><span class="p">;</span>
-<span class="lineno">11 </span>        <span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="nx">position</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
-<span class="lineno">12 </span>        <span class="k">if</span> <span class="p">(</span><span class="nx">distance</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">safeDistance</span><span class="p">)</span> <span class="p">{</span>
-<span class="lineno">13 </span>            <span class="nx">arcade</span><span class="p">.</span><span class="nx">moveToObject</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
-<span class="lineno">14 </span>        <span class="p">}</span>
-<span class="lineno">15 </span>    <span class="p">}</span>
-<span class="lineno">16 </span><span class="p">}</span>
+<p>To solve the problem, we need to define a <code>safeDistance</code> as a threshold for <code>stalker</code> to recognize that he is too close and stop:
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">2 </span>    <span class="p">...</span>
+<span class="lineno">3 </span>    <span class="kd">var</span> <span class="nx">position</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">stalker</span><span class="p">.</span><span class="nx">position</span><span class="p">;</span>
+<span class="lineno">4 </span>    <span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="nx">position</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+<span class="lineno">5 </span>    <span class="k">if</span> <span class="p">(</span><span class="nx">distance</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">safeDistance</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="lineno">6 </span>    <span class="p">...</span>
+<span class="lineno">7 </span><span class="p">}</span>
 </code></pre></div>
 </p>
 
 <hr />
 
-<p>For complete source code, check out the gist <a href="https://gist.github.com/netcell/60097d0661ad2f74a258">here</a>.</p>
+<p>For complete source code, check out this <a href="https://gist.github.com/netcell/60097d0661ad2f74a258">gist</a>. Here is the demonstration video from my <a href="/put-a-tele-lens-on-that-phaser/">previous post</a>.
+
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/DzFVyb30kFs" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+ </div>
+</p>
 
     </section>
 
 
   <footer class="post-footer">
 
-
-    
-    <figure class="author-image">
-        <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
-    </figure>
-    
-
-    
-
-
-
-
-
-<section class="author">
-  <h4><a href="http://netcell.github.io/">netcell</a></h4>
-  
-  <p>Developer, jack of all trades and master of some.</p>
-  
-  <div class="author-meta">
-    <span class="author-location icon-location">Hanoi, Vietnam</span>
-    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
-  </div>
-</section>
-
-
-
     
 <section class="share">
-  <h4>Share this post</h4>
+  
   <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=A%20Stalker%20on%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2fa-stalker-on-phaser%2f"
       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
       <span class="hidden">Twitter</span>
@@ -332,7 +284,7 @@
 
 <div id="disqus_thread"></div>
 <script type="text/javascript">
-  var disqus_shortname = 'ntanh';
+  var disqus_shortname = 'netcell';
   var disqus_url = 'http:\/\/netcell.github.io\/a-stalker-on-phaser\/';
   (function() {
     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -349,7 +301,32 @@
 </article>
 
 </main>
-    <footer class="site-footer clearfix">
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
         <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
         
     </footer>
