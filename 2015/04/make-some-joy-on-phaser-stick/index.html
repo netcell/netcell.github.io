@@ -35,7 +35,7 @@
      A Virtual Joystick for Phaser &middot;  @netcell
   </title>
 
-    <meta name="description" content="Romantic Programming." />
+    <meta name="description" content="Romantic Programming..." />
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -106,6 +106,8 @@
 
 
 
+
+
 <header class="main-header post-head no-cover">
   <nav class="main-nav clearfix">
 
@@ -119,12 +121,7 @@
   </nav>
 </header>
 
-
-
 <main class="content" role="main">
-
-
-
 
   <article class="post post">
 
@@ -141,35 +138,32 @@
           3 min read
         
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/es6/">#es6</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javaScript</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
          
         </section>
     </header>
 
     <section class="post-content">
-    
-    <div class="excerpt">So I wrote my own Virtual Joystick Plugin for the HTML5 game engine Phaser. That may sound stupid now, but at that time @photostorm didn’t release his official plugin yet. Still, it’s a $20 value there.</div>
-    
-
+      <div class="excerpt">So I wrote my own Virtual Joystick Plugin for the HTML5 game engine Phaser. That may sound stupid now, but at that time @photostorm didn’t release his official plugin yet. Still, it’s a $20 value there.</div>
       <p>So I needed a <em>Virtual Joystick</em> plugin (kinda) a few weeks ago. I found <a href="https://github.com/eugenioclrc/phaser-touch-control-plugin">phaser-touch-control-plugin</a>, but I want the joystick to stay in one place on the screen. So I wrote my own Virtual Joystick Plugin. That may sound stupid now, but at that time <em>@photostorm</em> didn’t release his <a href="http://phaser.io/shop/plugins/virtualjoystick">official plugin</a> yet. Still, it’s a $20 value there.</p>
 
 <p><strong>For a quick demo, check out the Youtube video at the bottom of this post.</strong></p>
@@ -186,7 +180,7 @@
 
 <ol>
 <li><p>A <strong>background</strong> for the joystick (the grey box) to show the players where to put their finger.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="kr">class</span> <span class="nx">Joystick</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span><span class="kr">class</span> <span class="nx">Joystick</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span> <span class="p">{</span>
 <span class="lineno">2 </span>    <span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno">3 </span>        <span class="kr">super</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">);</span>
 <span class="lineno">4 </span>        <span class="k">this</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
@@ -196,7 +190,7 @@
 </p></li>
 
 <li><p>A <em>draggable sprite</em> for the <strong>pin</strong> (the red box) which players can, duh, drag. Here, <code>pin.input.enableDrag</code> is called with first param <code>true</code> so that the pin is always <em>centered</em> at your finger tip.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno">2 </span>    <span class="p">...</span>
 <span class="lineno">3 </span>    <span class="kd">let</span> <span class="nx">pin</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;pin&#39;</span><span class="p">);</span>
 <span class="lineno">4 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
@@ -209,7 +203,7 @@
 </p></li>
 
 <li><p>Event <code>onDragStop</code>: The pin returns to the center of the background.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno">2 </span>    <span class="p">...</span>
 <span class="lineno">3 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 <span class="lineno">4 </span>    <span class="p">...</span>
@@ -229,7 +223,7 @@
     
 </figure>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>    <span class="p">...</span>
 <span class="lineno"> 3 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">maxDistance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
 <span class="lineno"> 4 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
@@ -267,7 +261,7 @@
 
 <ol>
 <li><p>Add a transparent <code>dragger</code> and move <code>dragging</code> events to <code>dragger</code>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>    <span class="p">...</span>
 <span class="lineno"> 3 </span>    <span class="kd">let</span> <span class="nx">dragger</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">dragger</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
 <span class="lineno"> 4 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
@@ -286,7 +280,7 @@
 </p></li>
 
 <li><p>The pin&rsquo;s position then would be set based on the dragger&rsquo;s position and <code>maxDistance</code>.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">onDragUpdate</span><span class="p">(){</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span><span class="nx">onDragUpdate</span><span class="p">(){</span>
 <span class="lineno">2 </span>    <span class="kd">let</span> <span class="p">{</span><span class="nx">pin</span><span class="p">,</span> <span class="nx">dragger</span><span class="p">,</span> <span class="nx">maxDistance</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 <span class="lineno">3 </span>    <span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="nx">dragger</span><span class="p">.</span><span class="nx">getMagnitude</span><span class="p">();</span>
 <span class="lineno">4 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">dragger</span><span class="p">);</span>
@@ -313,7 +307,7 @@
 
     
 <section class="share">
-  
+
   <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=A%20Virtual%20Joystick%20for%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
       <span class="hidden">Twitter</span>
@@ -325,6 +319,10 @@
   <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f&amp;description=A%20Virtual%20Joystick%20for%20Phaser"
       onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
       <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
   </a>
 </section>
 
@@ -347,10 +345,11 @@
 
 
 
-  </footer>
+</footer>
 </article>
 
 </main>
+
 
     <footer class="site-footer post-footer clearfix">
         
@@ -384,24 +383,6 @@
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
-    
-
-    
-      <a class="menu-button float-rss icon-feed" href="http://eepurl.com/bYfnUP"></a>
-    
-    
-      <a class="menu-button float-rss icon-twitter" style="right: 70px" href="https://twitter.com/share?text=A%20Virtual%20Joystick%20for%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
-          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-          <span class="hidden">Twitter</span>
-      </a>
-      <a class="menu-button float-rss icon-facebook" style="right: 120px" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
-          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-          <span class="hidden">Facebook</span>
-      </a>
-      <a class="menu-button float-rss icon-pinterest" style="right: 170px" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f&amp;description=A%20Virtual%20Joystick%20for%20Phaser"
-          onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
-          <span class="hidden">Pinterest</span>
-      </a>
     
 </body>
 </html>

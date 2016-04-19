@@ -35,7 +35,7 @@
      Put a Tele Lens on that Phaser &middot;  @netcell
   </title>
 
-    <meta name="description" content="Romantic Programming." />
+    <meta name="description" content="Romantic Programming..." />
 
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -106,6 +106,8 @@
 
 
 
+
+
 <header class="main-header post-head no-cover">
   <nav class="main-nav clearfix">
 
@@ -119,12 +121,7 @@
   </nav>
 </header>
 
-
-
 <main class="content" role="main">
-
-
-
 
   <article class="post post">
 
@@ -141,35 +138,32 @@
           2 min read
         
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/es6/">#es6</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javaScript</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
          
-         <span class="middotDivider"></span>
+          <span class="middotDivider"></span>
           <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
          
         </section>
     </header>
 
     <section class="post-content">
-    
-    <div class="excerpt">I realized the Camera class of the HTML5 game engine Phaser does not have zoom functionality, so I decided to build another camera that does, using a Group to simulate the scale and motion.</div>
-    
-
+      <div class="excerpt">I realized the Camera class of the HTML5 game engine Phaser does not have zoom functionality, so I decided to build another camera that does, using a Group to simulate the scale and motion.</div>
       
 
 <p><strong>This article was written based on Phaser 2.3, some of the information regarding the framework might not be applicable on later version of Phaser.</strong></p>
@@ -199,13 +193,13 @@
 
 <ol>
 <li>Make a <code>Phaser.Group</code>, call it <code>Camera</code>.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span>    <span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span>    <span class="kr">class</span> <span class="nx">Camera</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Group</span> <span class="p">{</span>
 <span class="lineno">2 </span>    <span class="p">}</span>
 </code></pre></div>
 </li>
 <li>Throw what I want to see on in it.</li>
 <li>Scale it when I want to zoom.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno">1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno">2 </span>        <span class="k">this</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">)</span>
 <span class="lineno">3 </span>    <span class="p">}</span>
 </code></pre></div>
@@ -236,7 +230,7 @@
 
 <p>The problem is: by default, the bounds of <code>game.camera</code> is set to the size of <code>game.world</code>. While our group is originally identical to <code>game.world</code>, when the group is scaled, <code>game.camera.bounds</code> should also be scaled and repositioned accordingly.</p>
 
-<p><div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span>    <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
+<p><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno"> 1 </span>    <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>        <span class="p">...</span>
 <span class="lineno"> 3 </span>        <span class="k">this</span><span class="p">.</span><span class="nx">bounds</span> <span class="o">=</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Rectangle</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">bounds</span><span class="p">);</span>
 <span class="lineno"> 4 </span>        <span class="p">...</span>
@@ -254,7 +248,7 @@
 </p>
 
 <p>Finally, I added some <code>tween</code> to make the zoom smooth.
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">,</span> <span class="nx">duration</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="lineno"> 1 </span>    <span class="nx">zoomTo</span><span class="p">(</span><span class="nx">scale</span><span class="p">,</span> <span class="nx">duration</span><span class="p">)</span> <span class="p">{</span>
 <span class="lineno"> 2 </span>        <span class="p">...</span>
 <span class="lineno"> 3 </span>        <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">cameraBounds</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
 <span class="lineno"> 4 </span>            <span class="nx">x</span>      <span class="o">:</span> <span class="nx">bounds</span><span class="p">.</span><span class="nx">width</span>  <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">scale</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
@@ -289,7 +283,7 @@
 
     
 <section class="share">
-  
+
   <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Put%20a%20Tele%20Lens%20on%20that%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f"
       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
       <span class="hidden">Twitter</span>
@@ -301,6 +295,10 @@
   <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f&amp;description=Put%20a%20Tele%20Lens%20on%20that%20Phaser"
       onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
       <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
   </a>
 </section>
 
@@ -323,10 +321,11 @@
 
 
 
-  </footer>
+</footer>
 </article>
 
 </main>
+
 
     <footer class="site-footer post-footer clearfix">
         
@@ -360,24 +359,6 @@
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
-    
-
-    
-      <a class="menu-button float-rss icon-feed" href="http://eepurl.com/bYfnUP"></a>
-    
-    
-      <a class="menu-button float-rss icon-twitter" style="right: 70px" href="https://twitter.com/share?text=Put%20a%20Tele%20Lens%20on%20that%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f"
-          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-          <span class="hidden">Twitter</span>
-      </a>
-      <a class="menu-button float-rss icon-facebook" style="right: 120px" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f"
-          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-          <span class="hidden">Facebook</span>
-      </a>
-      <a class="menu-button float-rss icon-pinterest" style="right: 170px" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f03%2fput-a-tele-lens-on-that-phaser%2f&amp;description=Put%20a%20Tele%20Lens%20on%20that%20Phaser"
-          onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
-          <span class="hidden">Pinterest</span>
-      </a>
     
 </body>
 </html>
