@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" A Virtual Joystick for Phaser &middot;  @netcell" />
+  	<meta property="og:site_name" content="@netcell" />
+  	<meta property="og:url" content="http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/" />
+
+    
+  	<meta property="og:type" content="article" />
+
+    <meta property="og:article:published_time" content="2015-04-03T00:00:00Z" />
+
+    
+    <meta property="og:article:tag" content="game" />
+    
+    <meta property="og:article:tag" content="development" />
+    
+    <meta property="og:article:tag" content="es6" />
+    
+    <meta property="og:article:tag" content="javaScript" />
+    
+    <meta property="og:article:tag" content="phaser" />
+    
+    <meta property="og:article:tag" content="guide" />
+    
+    <meta property="og:article:tag" content="tutorial" />
+    
+    
+
+  <title>
+     A Virtual Joystick for Phaser &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,500,500italic,300italic|Open+Sans:500,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+        
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="/">Blog</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+            	<a href="/page/about/">About</a>
+            </li>
+        
+    </ul>
+    
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+
+<main class="content" role="main">
+
+
+
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">A Virtual Joystick for Phaser</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2015-04-03T00:00:00Z">
+            Apr 3, 2015
+          </time>
+          <span class="middotDivider"></span>
+          3 min read
+        
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/es6/">#es6</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/javascript/">#javaScript</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
+         
+         <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+    
+    <div class="excerpt">So I wrote my own Virtual Joystick Plugin for the HTML5 game engine Phaser. That may sound stupid now, but at that time @photostorm didn’t release his official plugin yet. Still, it’s a $20 value there.</div>
+    
+
+      <p>So I needed a <em>Virtual Joystick</em> plugin (kinda) a few weeks ago. I found <a href="https://github.com/eugenioclrc/phaser-touch-control-plugin">phaser-touch-control-plugin</a>, but I want the joystick to stay in one place on the screen. So I wrote my own Virtual Joystick Plugin. That may sound stupid now, but at that time <em>@photostorm</em> didn’t release his <a href="http://phaser.io/shop/plugins/virtualjoystick">official plugin</a> yet. Still, it’s a $20 value there.</p>
+
+<p><strong>For a quick demo, check out the Youtube video at the bottom of this post.</strong></p>
+
+<p>Here is my design:
+
+<figure >
+    
+        <img src="/img/1-MOCWHqW8lCMOF3YOuZY9_w.png" />
+    
+    
+</figure>
+</p>
+
+<ol>
+<li><p>A <strong>background</strong> for the joystick (the grey box) to show the players where to put their finger.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="kr">class</span> <span class="nx">Joystick</span> <span class="kr">extends</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Sprite</span> <span class="p">{</span>
+<span class="lineno">2 </span>    <span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">3 </span>        <span class="kr">super</span><span class="p">(</span><span class="nx">game</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">);</span>
+<span class="lineno">4 </span>        <span class="k">this</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+<span class="lineno">5 </span>    <span class="p">}</span>
+<span class="lineno">6 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+
+<li><p>A <em>draggable sprite</em> for the <strong>pin</strong> (the red box) which players can, duh, drag. Here, <code>pin.input.enableDrag</code> is called with first param <code>true</code> so that the pin is always <em>centered</em> at your finger tip.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">2 </span>    <span class="p">...</span>
+<span class="lineno">3 </span>    <span class="kd">let</span> <span class="nx">pin</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;pin&#39;</span><span class="p">);</span>
+<span class="lineno">4 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+<span class="lineno">5 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="lineno">6 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="lineno">7 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">pin</span><span class="p">);</span>
+<span class="lineno">8 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">pin</span> <span class="o">=</span> <span class="nx">pin</span><span class="p">;</span>
+<span class="lineno">9 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Event <code>onDragStop</code>: The pin returns to the center of the background.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">2 </span>    <span class="p">...</span>
+<span class="lineno">3 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="lineno">4 </span>    <span class="p">...</span>
+<span class="lineno">5 </span><span class="p">}</span>
+<span class="lineno">6 </span><span class="nx">onDragStop</span><span class="p">(){</span>
+<span class="lineno">7 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">pin</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="lineno">8 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+
+<li><p>A restriction <code>maxDistance</code> to prevent the pin from going outside of the background (like in the picture below). If the background is a circle, this is normally the radius, meaning half of the background image width. The check happens at event <code>onDragUpdate</code>.
+
+<figure >
+    
+        <img src="/img/1-GGn274e5_Gy_Fe1Q4y_wZQ.png" />
+    
+    
+</figure>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno"> 2 </span>    <span class="p">...</span>
+<span class="lineno"> 3 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">maxDistance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<span class="lineno"> 4 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="lineno"> 5 </span>    <span class="p">...</span>
+<span class="lineno"> 6 </span><span class="p">}</span>
+<span class="lineno"> 7 </span><span class="nx">onDragUpdate</span><span class="p">(){</span>
+<span class="lineno"> 8 </span>    <span class="kd">let</span> <span class="p">{</span><span class="nx">pin</span><span class="p">,</span> <span class="nx">maxDistance</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="lineno"> 9 </span>    <span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="nx">pin</span><span class="p">.</span><span class="nx">getMagnitude</span><span class="p">();</span>
+<span class="lineno">10 </span>    <span class="k">if</span> <span class="p">(</span><span class="nx">distance</span> <span class="o">&gt;</span> <span class="nx">maxDistance</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">11 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">setMagnitude</span><span class="p">(</span><span class="nx">maxDistance</span><span class="p">);</span>
+<span class="lineno">12 </span>    <span class="p">}</span>
+<span class="lineno">13 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+</ol>
+
+<hr />
+
+<p>There are two problems:</p>
+
+<ol>
+<li>Event <code>onDragUpdate</code>: if <code>distance</code> is larger than <code>maxDistance</code>, the pin position is changed and not at player finger anymore.</li>
+<li>In other game, players can start dragging from anywhere on the background of the joystick and the pin jumps at it immediately. Here, players have to actually start dragging at the pin position.</li>
+</ol>
+
+<p>To solve this, I added a transparent layer to act as the draggable, and use the pin only for indication of position.
+
+<figure >
+    
+        <img src="/img/1-7uYh6KEiMyim_lhPJSxswg.png" />
+    
+    
+</figure>
+</p>
+
+<ol>
+<li><p>Add a transparent <code>dragger</code> and move <code>dragging</code> events to <code>dragger</code>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno"> 1 </span><span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno"> 2 </span>    <span class="p">...</span>
+<span class="lineno"> 3 </span>    <span class="kd">let</span> <span class="nx">dragger</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">dragger</span> <span class="o">=</span> <span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">sprite</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+<span class="lineno"> 4 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">anchor</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+<span class="lineno"> 5 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">dragger</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+<span class="lineno"> 6 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">inputEnabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="lineno"> 7 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="lineno"> 8 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">dragger</span><span class="p">);</span>
+<span class="lineno"> 9 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragStop</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="lineno">10 </span>    <span class="nx">dragger</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onDragUpdate</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="lineno">11 </span><span class="p">}</span>
+<span class="lineno">12 </span><span class="nx">onDragStop</span><span class="p">(){</span>
+<span class="lineno">13 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">dragger</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="lineno">14 </span>    <span class="k">this</span><span class="p">.</span><span class="nx">pin</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">setTo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="lineno">15 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+
+<li><p>The pin&rsquo;s position then would be set based on the dragger&rsquo;s position and <code>maxDistance</code>.
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="lineno">1 </span><span class="nx">onDragUpdate</span><span class="p">(){</span>
+<span class="lineno">2 </span>    <span class="kd">let</span> <span class="p">{</span><span class="nx">pin</span><span class="p">,</span> <span class="nx">dragger</span><span class="p">,</span> <span class="nx">maxDistance</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="lineno">3 </span>    <span class="kd">var</span> <span class="nx">distance</span> <span class="o">=</span> <span class="nx">dragger</span><span class="p">.</span><span class="nx">getMagnitude</span><span class="p">();</span>
+<span class="lineno">4 </span>    <span class="nx">pin</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">copyFrom</span><span class="p">(</span><span class="nx">dragger</span><span class="p">);</span>
+<span class="lineno">5 </span>    <span class="k">if</span> <span class="p">(</span><span class="nx">distance</span> <span class="o">&gt;</span> <span class="nx">maxDistance</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">6 </span>        <span class="nx">pin</span><span class="p">.</span><span class="nx">setMagnitude</span><span class="p">(</span><span class="nx">maxDistance</span><span class="p">);</span>
+<span class="lineno">7 </span>    <span class="p">}</span>
+<span class="lineno">8 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+</ol>
+
+<p>Check out the full source code on this <a href="https://gist.github.com/netcell/9083b5cef97125128420">gist</a>, and see this Virtual Joystick in action in my development footage for Sword of Vendetta: Dojo’s Last Blood.</p>
+
+<p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/r-rhHbcNb0g" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+ </div>
+</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+  
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=A%20Virtual%20Joystick%20for%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f&amp;description=A%20Virtual%20Joystick%20for%20Phaser"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'netcell';
+  var disqus_url = 'http:\/\/netcell.github.io\/2015\/04\/make-some-joy-on-phaser-stick\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+  </footer>
+</article>
+
+</main>
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    
+
+    
+      <a class="menu-button float-rss icon-feed" href="http://eepurl.com/bYfnUP"></a>
+    
+    
+      <a class="menu-button float-rss icon-twitter" style="right: 70px" href="https://twitter.com/share?text=A%20Virtual%20Joystick%20for%20Phaser&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
+          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden">Twitter</span>
+      </a>
+      <a class="menu-button float-rss icon-facebook" style="right: 120px" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f"
+          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden">Facebook</span>
+      </a>
+      <a class="menu-button float-rss icon-pinterest" style="right: 170px" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f04%2fmake-some-joy-on-phaser-stick%2f&amp;description=A%20Virtual%20Joystick%20for%20Phaser"
+          onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+          <span class="hidden">Pinterest</span>
+      </a>
+    
+</body>
+</html>
+

@@ -7,16 +7,162 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Fri, 20 Mar 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Apr 2015 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://netcell.github.io/tags/tutorial/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>A Virtual Joystick for Phaser</title>
+      <link>http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/</link>
+      <pubDate>Fri, 03 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/</guid>
+      <description>&lt;p&gt;So I needed a &lt;em&gt;Virtual Joystick&lt;/em&gt; plugin (kinda) a few weeks ago. I found &lt;a href=&#34;https://github.com/eugenioclrc/phaser-touch-control-plugin&#34;&gt;phaser-touch-control-plugin&lt;/a&gt;, but I want the joystick to stay in one place on the screen. So I wrote my own Virtual Joystick Plugin. That may sound stupid now, but at that time &lt;em&gt;@photostorm&lt;/em&gt; didn’t release his &lt;a href=&#34;http://phaser.io/shop/plugins/virtualjoystick&#34;&gt;official plugin&lt;/a&gt; yet. Still, it’s a $20 value there.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;For a quick demo, check out the Youtube video at the bottom of this post.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is my design:
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://netcell.github.io/img/1-MOCWHqW8lCMOF3YOuZY9_w.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;A &lt;strong&gt;background&lt;/strong&gt; for the joystick (the grey box) to show the players where to put their finger.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;kr&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Joystick&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Phaser&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;Sprite&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;constructor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;        &lt;span class=&#34;kr&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;game&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;background&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;anchor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;A &lt;em&gt;draggable sprite&lt;/em&gt; for the &lt;strong&gt;pin&lt;/strong&gt; (the red box) which players can, duh, drag. Here, &lt;code&gt;pin.input.enableDrag&lt;/code&gt; is called with first param &lt;code&gt;true&lt;/code&gt; so that the pin is always &lt;em&gt;centered&lt;/em&gt; at your finger tip.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;constructor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;game&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sprite&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;pin&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;anchor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;inputEnabled&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;enableDrag&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addChild&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;9 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Event &lt;code&gt;onDragStop&lt;/code&gt;: The pin returns to the center of the background.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;constructor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;events&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;position&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;A restriction &lt;code&gt;maxDistance&lt;/code&gt; to prevent the pin from going outside of the background (like in the picture below). If the background is a circle, this is normally the radius, meaning half of the background image width. The check happens at event &lt;code&gt;onDragUpdate&lt;/code&gt;.
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://netcell.github.io/img/1-GGn274e5_Gy_Fe1Q4y_wZQ.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;constructor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;events&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getMagnitude&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;11 &lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setMagnitude&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;12 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;13 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;There are two problems:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Event &lt;code&gt;onDragUpdate&lt;/code&gt;: if &lt;code&gt;distance&lt;/code&gt; is larger than &lt;code&gt;maxDistance&lt;/code&gt;, the pin position is changed and not at player finger anymore.&lt;/li&gt;
+&lt;li&gt;In other game, players can start dragging from anywhere on the background of the joystick and the pin jumps at it immediately. Here, players have to actually start dragging at the pin position.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To solve this, I added a transparent layer to act as the draggable, and use the pin only for indication of position.
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;http://netcell.github.io/img/1-7uYh6KEiMyim_lhPJSxswg.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Add a transparent &lt;code&gt;dragger&lt;/code&gt; and move &lt;code&gt;dragging&lt;/code&gt; events to &lt;code&gt;dragger&lt;/code&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;constructor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;game&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;sprite&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;anchor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;height&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;width&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;inputEnabled&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;input&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;enableDrag&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addChild&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;events&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;events&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;11 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;12 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragStop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;13 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;position&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;14 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;position&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setTo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;15 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The pin&amp;rsquo;s position then would be set based on the dragger&amp;rsquo;s position and &lt;code&gt;maxDistance&lt;/code&gt;.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;onDragUpdate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(){&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;    &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getMagnitude&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;    &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;position&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;copyFrom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dragger&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;        &lt;span class=&#34;nx&#34;&gt;pin&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;setMagnitude&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;maxDistance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Check out the full source code on this &lt;a href=&#34;https://gist.github.com/netcell/9083b5cef97125128420&#34;&gt;gist&lt;/a&gt;, and see this Virtual Joystick in action in my development footage for Sword of Vendetta: Dojo’s Last Blood.&lt;/p&gt;
+
+&lt;p&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/r-rhHbcNb0g&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>A Stalker on Phaser</title>
-      <link>http://netcell.github.io/a-stalker-on-phaser/</link>
+      <link>http://netcell.github.io/2015/03/a-stalker-on-phaser/</link>
       <pubDate>Fri, 20 Mar 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://netcell.github.io/a-stalker-on-phaser/</guid>
-      <description>&lt;p&gt;On my &lt;a href=&#34;http://netcell.github.io/put-a-tele-lens-on-that-phaser/&#34;&gt;previous post&lt;/a&gt;, I built an enhanced camera for &lt;a href=&#34;http://phaser.io&#34;&gt;Phaser&lt;/a&gt; that can smoothly zoom to any scale I want. At the end of that post, I shown you a demonstration video where the camera does not only zoom, but also follows the character smoothly. Now that&amp;rsquo;s not something Phaser is capable of.&lt;/p&gt;
+      <guid>http://netcell.github.io/2015/03/a-stalker-on-phaser/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;This article was written based on Phaser 2.3, some of the information regarding the framework might not be applicable on later version of Phaser.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;On my &lt;a href=&#34;http://netcell.github.io/2015/03/put-a-tele-lens-on-that-phaser/&#34;&gt;previous post&lt;/a&gt;, I built an enhanced camera for &lt;a href=&#34;http://phaser.io&#34;&gt;Phaser&lt;/a&gt; that can smoothly zoom to any scale I want. At the end of that post, I shown you a demonstration video where the camera does not only zoom, but also follows the character smoothly. Now that&amp;rsquo;s not something Phaser is capable of.&lt;/p&gt;
 
 &lt;p&gt;Don’t get me wrong, &lt;code&gt;Phaser.Camera&lt;/code&gt; does have follow functionality, but it just sticks the camera on to the entity. That is, in no way, &lt;em&gt;following&lt;/em&gt;.&lt;/p&gt;
 
@@ -34,7 +180,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;I would be using the &lt;code&gt;Camera&lt;/code&gt; class &lt;a href=&#34;http://netcell.github.io/put-a-tele-lens-on-that-phaser/&#34;&gt;(from previous post)&lt;/a&gt;. As always, my method is very simple:&lt;/p&gt;
+&lt;p&gt;I would be using the &lt;code&gt;Camera&lt;/code&gt; class &lt;a href=&#34;http://netcell.github.io/2015/03/put-a-tele-lens-on-that-phaser/&#34;&gt;(from previous post)&lt;/a&gt;. As always, my method is very simple:&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Make a sprite to act as a &lt;code&gt;stalker&lt;/code&gt; and stick the &lt;code&gt;game.camera&lt;/code&gt; on him.
@@ -95,7 +241,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;For complete source code, check out this &lt;a href=&#34;https://gist.github.com/netcell/60097d0661ad2f74a258&#34;&gt;gist&lt;/a&gt;. Here is the demonstration video from my &lt;a href=&#34;http://netcell.github.io/put-a-tele-lens-on-that-phaser/&#34;&gt;previous post&lt;/a&gt;.
+&lt;p&gt;For complete source code, check out this &lt;a href=&#34;https://gist.github.com/netcell/60097d0661ad2f74a258&#34;&gt;gist&lt;/a&gt;. Here is the demonstration video from my &lt;a href=&#34;http://netcell.github.io/2015/03/put-a-tele-lens-on-that-phaser/&#34;&gt;previous post&lt;/a&gt;.
 
 &lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
   &lt;iframe src=&#34;//www.youtube.com/embed/DzFVyb30kFs&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
@@ -106,10 +252,10 @@
     
     <item>
       <title>Put a Tele Lens on that Phaser</title>
-      <link>http://netcell.github.io/put-a-tele-lens-on-that-phaser/</link>
+      <link>http://netcell.github.io/2015/03/put-a-tele-lens-on-that-phaser/</link>
       <pubDate>Sat, 14 Mar 2015 00:00:00 +0000</pubDate>
       
-      <guid>http://netcell.github.io/put-a-tele-lens-on-that-phaser/</guid>
+      <guid>http://netcell.github.io/2015/03/put-a-tele-lens-on-that-phaser/</guid>
       <description>
 
 &lt;p&gt;&lt;strong&gt;This article was written based on Phaser 2.3, some of the information regarding the framework might not be applicable on later version of Phaser.&lt;/strong&gt;&lt;/p&gt;
@@ -220,7 +366,7 @@
 
 &lt;h1 id=&#34;so-what-s-next:407f38d34d40e6fc5a566a60411994f4&#34;&gt;SO WHAT&amp;rsquo;S NEXT?&lt;/h1&gt;
 
-&lt;p&gt;See how smoothly the camera is chasing the main character in the video? Check it out in &lt;a href=&#34;http://netcell.github.io/a-stalker-on-phaser/&#34;&gt;A Stalker on Phaser&lt;/a&gt; and &lt;a href=&#34;http://eepurl.com/bYfnUP&#34;&gt;stay tune&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See how smoothly the camera is chasing the main character in the video? Check it out in &lt;a href=&#34;http://netcell.github.io/2015/03/a-stalker-on-phaser/&#34;&gt;A Stalker on Phaser&lt;/a&gt; and &lt;a href=&#34;http://eepurl.com/bYfnUP&#34;&gt;stay tune&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
