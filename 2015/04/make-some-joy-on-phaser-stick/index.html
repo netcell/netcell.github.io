@@ -10,6 +10,7 @@
   	<meta property="og:url" content="http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/" />
 
     
+    <meta property="og:description" content="So I wrote my own Virtual Joystick Plugin for the HTML5 game engine Phaser. That may sound stupid now, but at that time @photostorm didn’t release his official plugin yet. Still, it’s a $20 value there." />
   	<meta property="og:type" content="article" />
 
     <meta property="og:article:published_time" content="2015-04-03T00:00:00Z" />
@@ -80,20 +81,54 @@
     </a>
     <ul>
         
-        
+
         
             
             <li class="nav-opened" role="presentation">
-            	<a href="/">Blog</a>
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
             </li>
         
             
             <li class="nav-opened" role="presentation">
-            	<a href="/page/about/">About</a>
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
             </li>
         
     </ul>
-    
+
     
     <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
     
@@ -380,9 +415,30 @@
         
     </footer>
     </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
     <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
     
 </body>
 </html>

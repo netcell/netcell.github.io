@@ -164,6 +164,9 @@ table { border-collapse: collapse; border-spacing: 0; }
 .icon-arrow-left:before {
     content: "\f431";
 }
+.icon-arrow-up:before {
+    content: "\f432";
+}
 .icon-stats:before {
     content: "\f508";
 }
@@ -2015,4 +2018,66 @@ article.post-li {
 
 .hashtag {
     margin-right: 3px;
+}
+
+body {
+    background: #111;
+}
+
+.site-wrapper {
+    margin-right: 240px;
+}
+
+.back-to-top {
+    position       : fixed;
+    bottom         : 20px;
+    right          : 20px;
+    display        : inline-block;
+    color          : #000;
+    z-index        : 11;
+    text-align     : center;
+    width          : 33px;
+    padding-top    : 3px;
+    padding-bottom : 0px;
+    border         : 2px rgba(17,17,17,0.7) solid;
+    cursor         : pointer;
+}
+
+@media only screen and (max-width: 900px) {
+    .site-wrapper {
+        margin-right: 0;
+    }
+}
+
+@media only screen and (min-width: 901px) {
+    .back-to-top {
+        right: 240px;
+    }
+    .menu-button {
+        display: none;
+    }
+    body.nav-closed .nav {
+        -webkit-transform: translate3D(0, 0, 0);
+        -ms-transform: translate3D(0, 0, 0);
+        transform: translate3D(0, 0, 0);
+        z-index: 11;
+        opacity: 1;
+    }
+    body.nav-opened .site-wrapper {
+        overflow-x: hidden;
+        -webkit-transform: translate3D(0px, 0, 0);
+        -ms-transform: translate3D(0px, 0, 0);
+        transform: translate3D(0px, 0, 0);
+        -webkit-transition: none;
+        transition: none;
+    }
+    .nav-close {
+        display: none;
+    }
+}
+
+.seperator.nav-opened {
+    height: 1px;
+    border-bottom: 1px rgba(232,240,247,0.2) solid;
+    margin: 10px auto;
 }
