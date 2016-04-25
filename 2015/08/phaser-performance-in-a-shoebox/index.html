@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Phaser Performance in a Shoebox &middot;  @netcell" />
+    <meta property="og:site_name" content="@netcell" />
+  	<meta property="twitter:site" content="@netcell" />
+    <meta name="twitter:creator" content="@netcell">
+    <meta name="twitter:title" content=" Phaser Performance in a Shoebox &middot;  @netcell">
+  	<meta property="og:url" content="http://netcell.github.io/2015/08/phaser-performance-in-a-shoebox/" />
+
+    
+      <meta property="og:description" content="Using seperated images instead of texture atlas may cause your Phaser game to perform badly. I would be discussing how packing images in texture atlas helped save a game from crashing on older devices." />
+      <meta name="twitter:description" content="Using seperated images instead of texture atlas may cause your Phaser game to perform badly. I would be discussing how packing images in texture atlas helped save a game from crashing on older devices."/>
+      <meta property="og:type" content="article" />
+      
+        <meta name="twitter:card" content="summary">
+        <meta property="og:image" content="http://netcell.github.io/img/logo.jpg" />
+        <meta name="twitter:image" content="http://netcell.github.io/img/logo.jpg" />
+      
+
+      <meta property="og:article:published_time" content="2015-08-21T00:00:00Z" />
+
+      
+        <meta property="og:article:tag" content="game" />
+      
+        <meta property="og:article:tag" content="development" />
+      
+        <meta property="og:article:tag" content="phaser" />
+      
+        <meta property="og:article:tag" content="shoebox" />
+      
+        <meta property="og:article:tag" content="guide" />
+      
+        <meta property="og:article:tag" content="tutorial" />
+      
+        <meta property="og:article:tag" content="texture atlas" />
+      
+    
+
+  <title>
+     Phaser Performance in a Shoebox &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming..." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2015/08/phaser-performance-in-a-shoebox/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
+            </li>
+        
+    </ul>
+
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+<main class="content" role="main">
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Phaser Performance in a Shoebox</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2015-08-21T00:00:00Z">
+            Aug 21, 2015
+          </time>
+          <span class="middotDivider"></span>
+          3 min read
+        
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/game/">#game</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/development/">#development</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/phaser/">#phaser</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/shoebox/">#shoebox</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/guide/">#guide</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/tutorial/">#tutorial</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/texture-atlas/">#texture atlas</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      <div class="excerpt">Using seperated images instead of texture atlas may cause your Phaser game to perform badly. I would be discussing how packing images in texture atlas helped save a game from crashing on older devices.</div>
+      <p>So a few weeks ago, I was working with a group of <a href="http:\phaser.io">Phaser</a> developers on the performance of their game. They were running into a pitfall where the game ran well on desktop browser but laggy on mobile and crashed on older devices. Reasons for this problem are mostly related to the amount of display objects, garbage collection and memory consumption. <em>In this post, I would be talking about how packing the images in texture atlas helped with the memory problem.</em></p>
+
+<p><strong>Texture Atlas</strong> is a type of image packaging created by merging multiple images (called frames) into one by putting them side by side on a single canvas. Unlike normal spritesheet, which requires all the frames to be identical in dimension and presents them as a table, texture atlas uses a separated file to record the dimension and position of each frame.</p>
+
+<p>With many processors, an image file is saved in the memory as a texture with dimension of a <em>power of two</em> (aka <strong>POT</strong>, eg. <code>2</code>, <code>4</code>, <code>8</code>, <code>16</code>, <code>128</code>, <code>256</code>, <code>512</code>, <code>1024</code>, <code>2048</code>, etc.). <em>For example,</em> an image of size <code>25×129</code> (<code>3225</code> pixels) will be saved on a texture of <code>128×256</code> (<code>32768</code> pixels), producing a waste of 9 times the original image. The more images like this are loaded, the more waste the processor produces and the more memory the game uses.</p>
+
+<p>However, if we stack 5 images like that on top of each other into a single image of size <code>125×129</code> (<code>16125</code> pixels), this new image can still be saved in the memory at <code>128×256</code>, which only produce a waste of 2 times the original size. This new image is called a <strong>texture atlas</strong>.</p>
+
+<p>A texture atlas includes two parts: An image file (normally <code>png</code>), and an information file (normally <code>json</code> or <code>xml</code>). In this post, I would write about generating texture atlas for Phaser using a software called <a href="http://renderhjs.net/shoebox/">Shoebox</a> with <code>png</code> image file format and <code>json</code> information file format.</p>
+
+<blockquote>
+<p>ShoeBox is a free Adobe Air based app for Windows and Mac OSX with game and ui related tools. Each tool uses a drag and drop – or clipboard interaction for a quick workflow.</p>
+</blockquote>
+
+<p>The software can be downloaded <a href="http://renderhjs.net/shoebox/">here</a>.</p>
+
+<p>Since none of the original information file templates exported by Shoebox are compatible with Phaser preloading process, the app needs to be reconfigured as follow:</p>
+
+<p><strong>The easy way:</strong> Download <code>Phaser.sbx</code> file here on my <a href="https://github.com/netcell/PhaserShoeBoxConfig">github repository</a>. Double click the file to load the configuration.</p>
+
+<p><strong>The hard way:</strong> Not like it matters, this is just an under the hood explanation. I actually based on an exported file from Adobe Flash:</p>
+
+<ol>
+<li><p>Right click on Spritesheet button on the home screen of Shoebox to open the Spritesheet settings; Change the File Format Loop setting to:
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">\t</span><span class="p">{</span><span class="err">\n\t\t</span><span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;@id&quot;</span><span class="p">,</span><span class="err">\n\t\t</span><span class="nt">&quot;frame&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="err">@x</span><span class="p">,</span> <span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="err">@y</span><span class="p">,</span> <span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="err">@w</span><span class="p">,</span> <span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="err">@h</span><span class="p">},</span><span class="err">\n\t\t</span><span class="nt">&quot;spriteSourceSize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="err">@fx</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="err">@fy</span><span class="p">,</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="err">@fw</span><span class="p">,</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="err">@fh</span><span class="p">},</span><span class="err">\n\t\t</span><span class="nt">&quot;sourceSize&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="err">@fw</span><span class="p">,</span><span class="nt">&quot;h&quot;</span><span class="p">:</span><span class="err">@fh</span><span class="p">}</span><span class="err">\n\t</span><span class="p">}</span><span class="err">@,\n</span>
+</code></pre></div>
+
+The code above is the template for the information of each frame. <code>/n</code> and <code>/t</code> are <strong>newline</strong> and <strong>tab</strong>. Any thing with <code>@</code> pre-fix are variable provided by Shoebox (check the list out at the <a href="http://renderhjs.net/shoebox/packSprites.htm">documentation page</a>).</p></li>
+
+<li><p>Change the File Format Outer setting to:
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="err">\n</span><span class="nt">&quot;frames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="err">\n@loop\n</span><span class="p">],</span><span class="err">\n</span><span class="nt">&quot;meta&quot;</span><span class="p">:</span> <span class="p">{</span><span class="err">\n\t</span><span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;@TexName&quot;</span><span class="p">,</span><span class="err">\n\t</span><span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="err">@W</span><span class="p">,</span> <span class="nt">&quot;h&quot;</span><span class="p">:</span> <span class="err">@H</span><span class="p">},</span><span class="err">\n\t</span><span class="nt">&quot;scale&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="err">\n</span><span class="p">}</span><span class="err">\n</span><span class="p">}</span>
+</code></pre></div>
+
+To create a texture atlas, you can either drag a group of images or a folder on to the Spritesheet button on Shoebox home screen and hit Save and you’re done.</p></li>
+</ol>
+
+<p>In the case of the game I mentioned, this decreased the memory consumption from above 250Mb to around 80Mb and saved the game from crashing on older devices like iPhone 4. However, the process of changing the code from using images to atlas/spritesheet was a long, tired and time consuming process. <strong>So next time you make a game, pack your sprites from the very start, it definitely worths your overhead time.</strong></p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Phaser%20Performance%20in%20a%20Shoebox&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fphaser-performance-in-a-shoebox%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fphaser-performance-in-a-shoebox%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fphaser-performance-in-a-shoebox%2f&amp;description=Phaser%20Performance%20in%20a%20Shoebox"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fphaser-performance-in-a-shoebox%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'netcell';
+  var disqus_url = 'http:\/\/netcell.github.io\/2015\/08\/phaser-performance-in-a-shoebox\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+</footer>
+</article>
+
+</main>
+
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
+    
+</body>
+</html>
+

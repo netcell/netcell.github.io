@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Texture Atlas on @netcell</title>
+    <link>http://netcell.github.io/tags/texture-atlas/</link>
+    <description>Recent content in Texture Atlas on @netcell</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2016</copyright>
+    <lastBuildDate>Fri, 21 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://netcell.github.io/tags/texture-atlas/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Phaser Performance in a Shoebox</title>
+      <link>http://netcell.github.io/2015/08/phaser-performance-in-a-shoebox/</link>
+      <pubDate>Fri, 21 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://netcell.github.io/2015/08/phaser-performance-in-a-shoebox/</guid>
+      <description>&lt;p&gt;So a few weeks ago, I was working with a group of &lt;a href=&#34;http:\phaser.io&#34;&gt;Phaser&lt;/a&gt; developers on the performance of their game. They were running into a pitfall where the game ran well on desktop browser but laggy on mobile and crashed on older devices. Reasons for this problem are mostly related to the amount of display objects, garbage collection and memory consumption. &lt;em&gt;In this post, I would be talking about how packing the images in texture atlas helped with the memory problem.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Texture Atlas&lt;/strong&gt; is a type of image packaging created by merging multiple images (called frames) into one by putting them side by side on a single canvas. Unlike normal spritesheet, which requires all the frames to be identical in dimension and presents them as a table, texture atlas uses a separated file to record the dimension and position of each frame.&lt;/p&gt;
+
+&lt;p&gt;With many processors, an image file is saved in the memory as a texture with dimension of a &lt;em&gt;power of two&lt;/em&gt; (aka &lt;strong&gt;POT&lt;/strong&gt;, eg. &lt;code&gt;2&lt;/code&gt;, &lt;code&gt;4&lt;/code&gt;, &lt;code&gt;8&lt;/code&gt;, &lt;code&gt;16&lt;/code&gt;, &lt;code&gt;128&lt;/code&gt;, &lt;code&gt;256&lt;/code&gt;, &lt;code&gt;512&lt;/code&gt;, &lt;code&gt;1024&lt;/code&gt;, &lt;code&gt;2048&lt;/code&gt;, etc.). &lt;em&gt;For example,&lt;/em&gt; an image of size &lt;code&gt;25×129&lt;/code&gt; (&lt;code&gt;3225&lt;/code&gt; pixels) will be saved on a texture of &lt;code&gt;128×256&lt;/code&gt; (&lt;code&gt;32768&lt;/code&gt; pixels), producing a waste of 9 times the original image. The more images like this are loaded, the more waste the processor produces and the more memory the game uses.&lt;/p&gt;
+
+&lt;p&gt;However, if we stack 5 images like that on top of each other into a single image of size &lt;code&gt;125×129&lt;/code&gt; (&lt;code&gt;16125&lt;/code&gt; pixels), this new image can still be saved in the memory at &lt;code&gt;128×256&lt;/code&gt;, which only produce a waste of 2 times the original size. This new image is called a &lt;strong&gt;texture atlas&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;A texture atlas includes two parts: An image file (normally &lt;code&gt;png&lt;/code&gt;), and an information file (normally &lt;code&gt;json&lt;/code&gt; or &lt;code&gt;xml&lt;/code&gt;). In this post, I would write about generating texture atlas for Phaser using a software called &lt;a href=&#34;http://renderhjs.net/shoebox/&#34;&gt;Shoebox&lt;/a&gt; with &lt;code&gt;png&lt;/code&gt; image file format and &lt;code&gt;json&lt;/code&gt; information file format.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;ShoeBox is a free Adobe Air based app for Windows and Mac OSX with game and ui related tools. Each tool uses a drag and drop – or clipboard interaction for a quick workflow.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The software can be downloaded &lt;a href=&#34;http://renderhjs.net/shoebox/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since none of the original information file templates exported by Shoebox are compatible with Phaser preloading process, the app needs to be reconfigured as follow:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The easy way:&lt;/strong&gt; Download &lt;code&gt;Phaser.sbx&lt;/code&gt; file here on my &lt;a href=&#34;https://github.com/netcell/PhaserShoeBoxConfig&#34;&gt;github repository&lt;/a&gt;. Double click the file to load the configuration.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The hard way:&lt;/strong&gt; Not like it matters, this is just an under the hood explanation. I actually based on an exported file from Adobe Flash:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Right click on Spritesheet button on the home screen of Shoebox to open the Spritesheet settings; Change the File Format Loop setting to:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;err&#34;&gt;\t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;filename&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;@id&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;frame&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;x&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;quot;y&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@w&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;quot;h&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@h&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;spriteSourceSize&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;x&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;y&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fw&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;h&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fh&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;sourceSize&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fw&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;h&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@fh&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;@,\n&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+The code above is the template for the information of each frame. &lt;code&gt;/n&lt;/code&gt; and &lt;code&gt;/t&lt;/code&gt; are &lt;strong&gt;newline&lt;/strong&gt; and &lt;strong&gt;tab&lt;/strong&gt;. Any thing with &lt;code&gt;@&lt;/code&gt; pre-fix are variable provided by Shoebox (check the list out at the &lt;a href=&#34;http://renderhjs.net/shoebox/packSprites.htm&#34;&gt;documentation page&lt;/a&gt;).&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Change the File Format Outer setting to:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;frames&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n@loop\n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;meta&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;image&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;@TexName&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;size&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;@W&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;quot;h&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;@H&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n\t&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;quot;scale&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+To create a texture atlas, you can either drag a group of images or a folder on to the Spritesheet button on Shoebox home screen and hit Save and you’re done.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the case of the game I mentioned, this decreased the memory consumption from above 250Mb to around 80Mb and saved the game from crashing on older devices like iPhone 4. However, the process of changing the code from using images to atlas/spritesheet was a long, tired and time consuming process. &lt;strong&gt;So next time you make a game, pack your sprites from the very start, it definitely worths your overhead time.&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
