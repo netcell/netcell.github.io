@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" A morning in the Gitlab &middot;  @netcell" />
+    <meta property="og:site_name" content="@netcell" />
+  	<meta property="twitter:site" content="@netcell" />
+    <meta name="twitter:creator" content="@netcell">
+    <meta name="twitter:title" content=" A morning in the Gitlab &middot;  @netcell">
+  	<meta property="og:url" content="http://netcell.github.io/2015/08/a-morning-in-the-gitlab/" />
+
+    
+      <meta property="og:description" content="I decided that enough is enough, I gave Gitlab a try. I spun up a brand new server and installed it. That wasn&#39;t a pleasant morning for me." />
+      <meta name="twitter:description" content="I decided that enough is enough, I gave Gitlab a try. I spun up a brand new server and installed it. That wasn&#39;t a pleasant morning for me."/>
+      <meta property="og:type" content="article" />
+      
+        <meta name="twitter:card" content="summary">
+        <meta property="og:image" content="http://netcell.github.io/img/logo.jpg" />
+        <meta name="twitter:image" content="http://netcell.github.io/img/logo.jpg" />
+      
+
+      <meta property="og:article:published_time" content="2015-08-24T00:00:00Z" />
+
+      
+        <meta property="og:article:tag" content="git" />
+      
+        <meta property="og:article:tag" content="admin" />
+      
+        <meta property="og:article:tag" content="server" />
+      
+        <meta property="og:article:tag" content="vps" />
+      
+        <meta property="og:article:tag" content="gitlab" />
+      
+    
+
+  <title>
+     A morning in the Gitlab &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming..." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2015/08/a-morning-in-the-gitlab/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
+            </li>
+        
+    </ul>
+
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+<main class="content" role="main">
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">A morning in the Gitlab</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2015-08-24T00:00:00Z">
+            Aug 24, 2015
+          </time>
+          <span class="middotDivider"></span>
+          4 min read
+        
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/git/">#git</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/admin/">#admin</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/server/">#server</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/vps/">#vps</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/gitlab/">#gitlab</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      <div class="excerpt">I decided that enough is enough, I gave Gitlab a try. I spun up a brand new server and installed it. That wasn&#39;t a pleasant morning for me.</div>
+      
+
+<h2 id="this-post-is-about-setting-up-gitlab-with-the-shipped-nginx-on-a-shared-server-behind-apache-with-multiple-other-web-services-running-on-it-that-is-not-a-recommended-setup-and-you-should-use-a-dedicated-vps-and-nginx-only-to-prevent-problems-since-the-server-i-was-using-already-run-something-with-apache-configuring-like-above-is-much-more-convenient:923f4083906d2a78555c2a2b672fb928">This post is about setting up Gitlab with the shipped <code>nginx</code> on a shared server behind <code>apache</code> with multiple other web services running on it. That is not a recommended setup and you should use a dedicated VPS and <code>nginx</code> only to prevent problems. Since the server I was using already run something with <code>apache</code>, configuring like above is much more convenient.</h2>
+
+<p>Last year I had to setup a git server for my team. Prior to that moment, I had only used Github and my mates were only familiar with SVN.  I chose <a href="https://github.com/sitaramc/gitolite">gitolite</a> to control access to the git server on a <a href="http://linode.com">Linode</a> VPS. It took me quite a few days before I finally successfully got gitolite up and running.</p>
+
+<p>However, the workflow of gitolite was definitely not very pleasant. To add new member, set permission or make other configurations, I had to add public keys and change files in a gitolite-admin repository and push to my server. My days were like this: Add new member – edit and push, add new repo – edit and push, give permission – edit and push… Eventually, I figured out how to <a href="http://gitolite.com/gitolite/odds-and-ends.html#gh">let the user create repositories by themselves</a>, yet I still had to help them set permissions for other users. May be there are some other ways to make my life easier with gitolite, but it’s still a pain in the ass. After I handed the process to another person, I never looked back again. Until this morning.</p>
+
+<p>Yesterday morning I decided that enough is enough, I gave <a href="http://gitlab.com">Gitlab</a> a try. I spun up a brand new server and installed it. I did have a look at Gitlab a while a go, but at that time the installation was pretty complicated to me, I didn’t have a new server and if I accidentally messed up, my life, and my teammates lives, would be ruined.</p>
+
+<hr />
+
+<p><strong>Gitlab</strong> has 3 versions: <strong>Gitlab CE</strong> – the free version, <strong>Gitlab CC</strong> has enterprise features (can’t understand the list, seriously) and <strong>Gitlab.com</strong> – similar to Bitbucket. The installation is pretty straight forward, available on the download page. At least until the process is finished and you cannot connect to the front end.</p>
+
+<hr />
+
+<p>First, since I have already had something running on the VPS at port 80, Gitlab cannot use the port. Instead, I had to give Gitlab another port, and another domain for convenience. So I opened <code>/etc/gitlab/gitlab.rb</code> and changed <code>external_url</code> property to match my domain:</p>
+
+<pre><code>external_url 'http://my.domain'
+</code></pre>
+
+<p>Then, I headed to <code>/opt/gitlab/embedded/conf/nginx.conf</code> to changed the port and server name as follow:</p>
+
+<pre><code>server {
+    listen [MY DESIRED PORT];
+    server_name 127.0.0.1;
+    ...
+}
+</code></pre>
+
+<p>Since my server is currently using <code>apache2</code>, I also had to add to the configuration at <code>/etc/apache2/ports.conf</code> the following settings:</p>
+
+<pre><code>&lt;VirtualHost *:80&gt;
+    ProxyPreserveHost On
+    ServerName git.mininoic.com
+    ProxyPass / http://localhost:[MY DESIRED PORT]/
+    ProxyPassReverse / http://localhost:[MY DESIRED PORT]/
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>Seem easy enough. However, at this point, if you attempt to restart <code>apache</code>, you will only get an error page. I didn’t note down or take a screenshot, so you might have to figure it out on your own if you want, but the problem was just that I didn’t include some mod files. Just run the follow commands and everything will be fine.</p>
+
+<pre><code>a2enmod proxy
+a2enmod proxy_http
+service apache2 restart
+</code></pre>
+
+<p>Then, as I was able to connect to my front end, I received a beautiful <code>500-error</code> page of Gitlab, told me that something was wrong, without any useful information whatsoever.
+&gt;Something is not right? What did I miss? [Halloween Nightmare Game]</p>
+
+<p>I didn’t know what to do, so I googled around, until I realized there is a log file. Dumb me! The log file can be accessed by using:</p>
+
+<pre><code>sudo gitlab-ctl tail
+</code></pre>
+
+<p>I noticed the following part:</p>
+
+<pre><code>FATAL:  could not create shared memory segment: Invalid argument
+...
+HINT:  This error usually means that PostgreSQL's request for a shared memory segment exceeded your kernel's SHMMAX parameter.  You can either reduce the request size or reconfigure the kernel with larger SHMMAX. To reduce the request size ... reduce PostgreSQL's shared memory usage, perhaps by reducing shared_buffers or max_connections.
+</code></pre>
+
+<p>According to Google <em>[dah]</em> and the error specified, the fix was pretty simple: in the <code>gitlab.rb</code> file, change the following settings:</p>
+
+<pre><code>postgresql['shared_buffers'] = &quot;1MB&quot;
+postgresql['shmmax'] = 4294967295
+postgresql['shmall'] = 1048575
+</code></pre>
+
+<p>After messing around with the <code>root</code> user, I decided to create my own account. Gitlab gloriously told me that it had successfully created my account and kindly asked me to check for an activation email. I checked my inbox, I checked my spam mails. But there wasn’t any email to be found.</p>
+
+<p>I tried to restart and reconfigured Gitlab so many times, even tried to use Gmail with SMTP instead of the built in solution. I never did successfully authorized Gitlab with Gmail nor figured out what went wrong. At the end of the morning, I removed all my changes. Guess what? The mail is working now. No idea why???</p>
+
+<p>Anyway, now my team is settling down with Gitlab, and I hope nothing bad is coming :(</p>
+
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=A%20morning%20in%20the%20Gitlab&amp;url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fa-morning-in-the-gitlab%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fa-morning-in-the-gitlab%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fa-morning-in-the-gitlab%2f&amp;description=A%20morning%20in%20the%20Gitlab"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2015%2f08%2fa-morning-in-the-gitlab%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'netcell';
+  var disqus_url = 'http:\/\/netcell.github.io\/2015\/08\/a-morning-in-the-gitlab\/';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+</footer>
+</article>
+
+</main>
+
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
+    
+</body>
+</html>
+

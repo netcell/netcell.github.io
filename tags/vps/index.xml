@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vps on @netcell</title>
+    <link>http://netcell.github.io/tags/vps/</link>
+    <description>Recent content in Vps on @netcell</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2016</copyright>
+    <lastBuildDate>Mon, 24 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://netcell.github.io/tags/vps/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>A morning in the Gitlab</title>
+      <link>http://netcell.github.io/2015/08/a-morning-in-the-gitlab/</link>
+      <pubDate>Mon, 24 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://netcell.github.io/2015/08/a-morning-in-the-gitlab/</guid>
+      <description>
+
+&lt;h2 id=&#34;this-post-is-about-setting-up-gitlab-with-the-shipped-nginx-on-a-shared-server-behind-apache-with-multiple-other-web-services-running-on-it-that-is-not-a-recommended-setup-and-you-should-use-a-dedicated-vps-and-nginx-only-to-prevent-problems-since-the-server-i-was-using-already-run-something-with-apache-configuring-like-above-is-much-more-convenient:923f4083906d2a78555c2a2b672fb928&#34;&gt;This post is about setting up Gitlab with the shipped &lt;code&gt;nginx&lt;/code&gt; on a shared server behind &lt;code&gt;apache&lt;/code&gt; with multiple other web services running on it. That is not a recommended setup and you should use a dedicated VPS and &lt;code&gt;nginx&lt;/code&gt; only to prevent problems. Since the server I was using already run something with &lt;code&gt;apache&lt;/code&gt;, configuring like above is much more convenient.&lt;/h2&gt;
+
+&lt;p&gt;Last year I had to setup a git server for my team. Prior to that moment, I had only used Github and my mates were only familiar with SVN.  I chose &lt;a href=&#34;https://github.com/sitaramc/gitolite&#34;&gt;gitolite&lt;/a&gt; to control access to the git server on a &lt;a href=&#34;http://linode.com&#34;&gt;Linode&lt;/a&gt; VPS. It took me quite a few days before I finally successfully got gitolite up and running.&lt;/p&gt;
+
+&lt;p&gt;However, the workflow of gitolite was definitely not very pleasant. To add new member, set permission or make other configurations, I had to add public keys and change files in a gitolite-admin repository and push to my server. My days were like this: Add new member – edit and push, add new repo – edit and push, give permission – edit and push… Eventually, I figured out how to &lt;a href=&#34;http://gitolite.com/gitolite/odds-and-ends.html#gh&#34;&gt;let the user create repositories by themselves&lt;/a&gt;, yet I still had to help them set permissions for other users. May be there are some other ways to make my life easier with gitolite, but it’s still a pain in the ass. After I handed the process to another person, I never looked back again. Until this morning.&lt;/p&gt;
+
+&lt;p&gt;Yesterday morning I decided that enough is enough, I gave &lt;a href=&#34;http://gitlab.com&#34;&gt;Gitlab&lt;/a&gt; a try. I spun up a brand new server and installed it. I did have a look at Gitlab a while a go, but at that time the installation was pretty complicated to me, I didn’t have a new server and if I accidentally messed up, my life, and my teammates lives, would be ruined.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Gitlab&lt;/strong&gt; has 3 versions: &lt;strong&gt;Gitlab CE&lt;/strong&gt; – the free version, &lt;strong&gt;Gitlab CC&lt;/strong&gt; has enterprise features (can’t understand the list, seriously) and &lt;strong&gt;Gitlab.com&lt;/strong&gt; – similar to Bitbucket. The installation is pretty straight forward, available on the download page. At least until the process is finished and you cannot connect to the front end.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;First, since I have already had something running on the VPS at port 80, Gitlab cannot use the port. Instead, I had to give Gitlab another port, and another domain for convenience. So I opened &lt;code&gt;/etc/gitlab/gitlab.rb&lt;/code&gt; and changed &lt;code&gt;external_url&lt;/code&gt; property to match my domain:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;external_url &#39;http://my.domain&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, I headed to &lt;code&gt;/opt/gitlab/embedded/conf/nginx.conf&lt;/code&gt; to changed the port and server name as follow:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    listen [MY DESIRED PORT];
+    server_name 127.0.0.1;
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since my server is currently using &lt;code&gt;apache2&lt;/code&gt;, I also had to add to the configuration at &lt;code&gt;/etc/apache2/ports.conf&lt;/code&gt; the following settings:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;VirtualHost *:80&amp;gt;
+    ProxyPreserveHost On
+    ServerName git.mininoic.com
+    ProxyPass / http://localhost:[MY DESIRED PORT]/
+    ProxyPassReverse / http://localhost:[MY DESIRED PORT]/
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Seem easy enough. However, at this point, if you attempt to restart &lt;code&gt;apache&lt;/code&gt;, you will only get an error page. I didn’t note down or take a screenshot, so you might have to figure it out on your own if you want, but the problem was just that I didn’t include some mod files. Just run the follow commands and everything will be fine.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;a2enmod proxy
+a2enmod proxy_http
+service apache2 restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, as I was able to connect to my front end, I received a beautiful &lt;code&gt;500-error&lt;/code&gt; page of Gitlab, told me that something was wrong, without any useful information whatsoever.
+&amp;gt;Something is not right? What did I miss? [Halloween Nightmare Game]&lt;/p&gt;
+
+&lt;p&gt;I didn’t know what to do, so I googled around, until I realized there is a log file. Dumb me! The log file can be accessed by using:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo gitlab-ctl tail
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I noticed the following part:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FATAL:  could not create shared memory segment: Invalid argument
+...
+HINT:  This error usually means that PostgreSQL&#39;s request for a shared memory segment exceeded your kernel&#39;s SHMMAX parameter.  You can either reduce the request size or reconfigure the kernel with larger SHMMAX. To reduce the request size ... reduce PostgreSQL&#39;s shared memory usage, perhaps by reducing shared_buffers or max_connections.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;According to Google &lt;em&gt;[dah]&lt;/em&gt; and the error specified, the fix was pretty simple: in the &lt;code&gt;gitlab.rb&lt;/code&gt; file, change the following settings:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;postgresql[&#39;shared_buffers&#39;] = &amp;quot;1MB&amp;quot;
+postgresql[&#39;shmmax&#39;] = 4294967295
+postgresql[&#39;shmall&#39;] = 1048575
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After messing around with the &lt;code&gt;root&lt;/code&gt; user, I decided to create my own account. Gitlab gloriously told me that it had successfully created my account and kindly asked me to check for an activation email. I checked my inbox, I checked my spam mails. But there wasn’t any email to be found.&lt;/p&gt;
+
+&lt;p&gt;I tried to restart and reconfigured Gitlab so many times, even tried to use Gmail with SMTP instead of the built in solution. I never did successfully authorized Gitlab with Gmail nor figured out what went wrong. At the end of the morning, I removed all my changes. Guess what? The mail is working now. No idea why???&lt;/p&gt;
+
+&lt;p&gt;Anyway, now my team is settling down with Gitlab, and I hope nothing bad is coming :(&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
