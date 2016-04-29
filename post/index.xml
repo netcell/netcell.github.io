@@ -84,9 +84,9 @@
       <pubDate>Mon, 24 Aug 2015 00:00:00 +0000</pubDate>
       
       <guid>http://netcell.github.io/2015/08/a-morning-in-the-gitlab/</guid>
-      <description>
-
-&lt;h4 id=&#34;this-post-is-about-setting-up-gitlab-with-the-shipped-nginx-on-a-shared-server-behind-apache-with-multiple-other-web-services-running-on-it-that-is-not-a-recommended-setup-and-you-should-use-a-dedicated-vps-and-nginx-only-to-prevent-problems-since-the-server-i-was-using-already-run-something-with-apache-configuring-like-above-is-much-more-convenient:923f4083906d2a78555c2a2b672fb928&#34;&gt;This post is about setting up Gitlab with the shipped &lt;code&gt;nginx&lt;/code&gt; on a shared server behind &lt;code&gt;apache&lt;/code&gt; with multiple other web services running on it. That is not a recommended setup and you should use a dedicated VPS and &lt;code&gt;nginx&lt;/code&gt; only to prevent problems. Since the server I was using already run something with &lt;code&gt;apache&lt;/code&gt;, configuring like above is much more convenient.&lt;/h4&gt;
+      <description>&lt;blockquote&gt;
+&lt;p&gt;This post is about setting up Gitlab with the shipped &lt;code&gt;nginx&lt;/code&gt; on a shared server behind &lt;code&gt;apache&lt;/code&gt; with multiple other web services running on it. That is &lt;strong&gt;NOT&lt;/strong&gt; a recommended setup and you should use a dedicated VPS and &lt;code&gt;nginx&lt;/code&gt; only to prevent problems. I only configured like this because the server I used was already running something else with &lt;code&gt;apache&lt;/code&gt; on port 80.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Last year I had to setup a git server for my team. Prior to that moment, I had only used Github and my mates were only familiar with SVN.  I chose &lt;a href=&#34;https://github.com/sitaramc/gitolite&#34;&gt;gitolite&lt;/a&gt; to control access to the git server on a &lt;a href=&#34;http://linode.com&#34;&gt;Linode&lt;/a&gt; VPS. It took me quite a few days before I finally successfully got gitolite up and running.&lt;/p&gt;
 
