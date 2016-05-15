@@ -7,11 +7,155 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>All rights reserved - 2016</copyright>
-    <lastBuildDate>Tue, 26 Apr 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 15 May 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://netcell.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Convert base64 to image file in php</title>
+      <title>Datastore with PHP - Part 1: php-gds and datachore</title>
+      <link>http://netcell.github.io/2016/05/datastore-with-php-part-1/</link>
+      <pubDate>Sun, 15 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://netcell.github.io/2016/05/datastore-with-php-part-1/</guid>
+      <description>
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Google Cloud Datastore&lt;/strong&gt; is a NoSQL document database built for automatic scaling, high performance, and ease of application development.(&lt;a href=&#34;https://cloud.google.com/datastore/&#34;&gt;Google&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Google Cloud Datastore&lt;/strong&gt; is a simple &lt;a href=&#34;http://www.sitepoint.com/sql-vs-nosql-differences/&#34;&gt;NoSQL&lt;/a&gt; service, and cheaper than SQL when using on &lt;a href=&#34;https://cloud.google.com/&#34;&gt;Google Cloud&lt;/a&gt;, according to one of my friend. However, while he is running Java on &lt;a href=&#34;https://cloud.google.com/appengine/&#34;&gt;Google App Engine&lt;/a&gt;, I am working on a PHP site and there are no official easy way to access this great solution yet.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Google Cloud Datastore&lt;/strong&gt; is a great NoSQL solution (hosted, scalable, free up to a point), but it can be tricky (i.e. there&amp;rsquo;s lots of code glue needed) to get even the &amp;ldquo;Hello World&amp;rdquo; of data persistence up and running in PHP. (&lt;a href=&#34;https://github.com/tomwalder&#34;&gt;Tom Walder&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There are two popular PHP libraries available on Github that help us working with Datastore: &lt;a href=&#34;https://github.com/tomwalder/php-gds&#34;&gt;&lt;code&gt;php-gds&lt;/code&gt;&lt;/a&gt; by Tom Walder and &lt;a href=&#34;https://github.com/pwhelan/datachore&#34;&gt;&lt;code&gt;datachore&lt;/code&gt;&lt;/a&gt; by Phillip Whelan. At the time of this post, &lt;code&gt;php-gds&lt;/code&gt; is the one with most recent update, so I went with this library.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-setup:ae4bfdb544d8db0e011806b77da11d8b&#34;&gt;The setup&lt;/h3&gt;
+
+&lt;p&gt;While the documentation of &lt;code&gt;php-gds&lt;/code&gt; isn&amp;rsquo;t great, or rather lacking one, it is not hard to figure out how to use this library. To install over Composer, just include it in the field &lt;code&gt;require&lt;/code&gt; in &lt;code&gt;composer.json&lt;/code&gt; as follow:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;quot;require&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;quot;tomwalder/php-gds&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;v2.1.0&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;If you are running your app on App Engine, there are no setup needed, it&amp;rsquo;s &lt;em&gt;plug-and-play&lt;/em&gt;. Otherwise, you would need to follow this &lt;a href=&#34;https://github.com/tomwalder/php-gds#getting-started&#34;&gt;guide&lt;/a&gt; for getting the JSON service key and this &lt;a href=&#34;https://github.com/tomwalder/php-gds#using-the-google-php-api-and-the-json-datastore-api&#34;&gt;guide&lt;/a&gt; to configure the Google API Client, it&amp;rsquo;s not rocket science, but the guide is in need of upgrade for newbies.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-ugly:ae4bfdb544d8db0e011806b77da11d8b&#34;&gt;The Ugly&lt;/h3&gt;
+
+&lt;p&gt;While I prefer to use &lt;code&gt;php-gds&lt;/code&gt; because its last update is more recent than &lt;code&gt;datachore&lt;/code&gt;&amp;rsquo;s, I prefer the approach of &lt;code&gt;datachore&lt;/code&gt; in term of schemas, entities creation and query. One way to describe the difference is that &lt;a href=&#34;http://www.programcreek.com/2011/09/what-is-the-difference-between-a-java-library-and-a-framework/&#34;&gt;&lt;code&gt;php-gds&lt;/code&gt; is a &lt;strong&gt;library&lt;/strong&gt; (what you call), and &lt;code&gt;datachore&lt;/code&gt; is a &lt;strong&gt;framework&lt;/strong&gt; (what calls you)&lt;/a&gt; - not a correct comparison in this case, but you get the idea.&lt;/p&gt;
+
+&lt;h5 id=&#34;here-is-a-flow-in-php-gds:ae4bfdb544d8db0e011806b77da11d8b&#34;&gt;Here is a flow in &lt;code&gt;php-gds&lt;/code&gt;:&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;You create a schema - &lt;em&gt;it&amp;rsquo;s not structured and can be messed up&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Create a schema of kind &amp;#39;Book&amp;#39; with 3 string fields&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_schema&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;GDS\Schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Book&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;author&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addString&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;isbn&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Use that schema to build a store - &lt;em&gt;it&amp;rsquo;s an unnecessary step and should be merged with schema&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Build a store of that schema&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book_store&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;GDS\Store&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Run a method of that store to create an entity - &lt;em&gt;where you can accidentally add a new, indexed field which would cost you and can be prevented in the schema definition step&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Create an entity from that store&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$obj_book_store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createEntity&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;title&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Some Book&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;author&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;A N Other Guy&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;isbn&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1840224313&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;published&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;DateTime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-5 years&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Save that entity to the store - &lt;em&gt;for some reason save/upsert and delete are not presented as a standalone section in the Getting started section of the &lt;code&gt;php-gds&lt;/code&gt; github repository, but in the example and scattered around&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;upsert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Fetch from the store - &lt;em&gt;why do I need to specify the kind name when I have already define it in the creation of the store?&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$query&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;SELECT * FROM Book WHERE title = &amp;#39;Some Book&amp;#39;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book_store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;fetchOne&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// or&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book_store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$query&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$obj_book_store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;fetchOne&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Other tasks are shown in the &lt;code&gt;php-gds&lt;/code&gt; github repository, I have not yet understood transaction and ancestry API so I would not discussed it in this series.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h5 id=&#34;now-look-at-a-flow-in-datachore:ae4bfdb544d8db0e011806b77da11d8b&#34;&gt;Now look at a flow in &lt;code&gt;datachore&lt;/code&gt;:&lt;/h5&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Creating schema, store in a single class definition:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;namespace&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;use&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;\Datachore\Type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Test&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;extends&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;\Datachore\Model&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;protected&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$properties&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;quot;author&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;quot;isbn&amp;quot;&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;String&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Create an entity and save it directly (the same for deleting):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;model\Test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;title&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Some Book&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;author&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;A N Other Guy&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;isbn&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;1840224313&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// Would not create a new indexed field&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;published&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;DateTime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-5 years&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;save&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Query and find the entity - GQL query builder
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$tests&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;model\Test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;where&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;=&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Some Book&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The approach of &lt;code&gt;datachore&lt;/code&gt; is, in my opinion, much more elegant and simple to use. The library also supports more field types (including &lt;code&gt;Set&lt;/code&gt;, similar to &lt;code&gt;List&lt;/code&gt; type in Python version) and have a AutoIndexer to help ensuring we have an updated index.yaml which is required to use composite indexes on Google Cloud Datastore and avoid any missing index errors on the live system. &lt;strong&gt;However&lt;/strong&gt;, I cannot find how to explicitly declare which field to index and which not to!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;reinventing-the-wheel:ae4bfdb544d8db0e011806b77da11d8b&#34;&gt;Reinventing the wheel&lt;/h3&gt;
+
+&lt;p&gt;In this series, I am going to wrap the &lt;code&gt;php-gds&lt;/code&gt; to provide some functionalities and approaches of &lt;code&gt;datachore&lt;/code&gt; in this library. People normally say &lt;em&gt;&amp;ldquo;don&amp;rsquo;t reinventing the wheel&amp;rdquo;&lt;/em&gt;, but I am doing this anyway due to these reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;em&gt;Reinventing the wheel is fun&lt;/em&gt; and I can learn a lot from it.&lt;/li&gt;
+&lt;li&gt;The latest commit of &lt;code&gt;datachore&lt;/code&gt; is on Dec 30, 2015 comparing to April 29, 2016 for &lt;code&gt;php-gds&lt;/code&gt;&amp;rsquo;s.&lt;/li&gt;
+&lt;li&gt;Lack of explicit index declaration in &lt;code&gt;datachore&lt;/code&gt;?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Keep follow the path of this series below to accompany me on this journey of using Google Datastore with PHP.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Convert base64 to image file in PHP</title>
       <link>http://netcell.github.io/2016/04/image-base64/</link>
       <pubDate>Tue, 26 Apr 2016 00:00:00 +0000</pubDate>
       

@@ -48,7 +48,7 @@
     <meta name="description" content="Romantic Programming..." />
 
     <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
     <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
 	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
@@ -207,7 +207,10 @@
     </header>
 
     <section class="post-content">
+      
+
       <div class="excerpt">So I wrote my own Virtual Joystick Plugin for the HTML5 game engine Phaser. That may sound stupid now, but at that time @photostorm didn’t release his official plugin yet. Still, it’s a $20 value there.</div>
+
       <p>So I needed a <em>Virtual Joystick</em> plugin (kinda) a few weeks ago. I found <a href="https://github.com/eugenioclrc/phaser-touch-control-plugin">phaser-touch-control-plugin</a>, but I want the joystick to stay in one place on the screen. So I wrote my own Virtual Joystick Plugin. That may sound stupid now, but at that time <em>@photostorm</em> didn’t release his <a href="http://phaser.io/shop/plugins/virtualjoystick">official plugin</a> yet. Still, it’s a $20 value there.</p>
 
 <p><strong>For a quick demo, check out the Youtube video at the bottom of this post.</strong></p>
@@ -344,6 +347,21 @@
  </div>
 </p>
 
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
     </section>
 
 
@@ -373,21 +391,8 @@
 
 
     
-
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'netcell';
-  var disqus_url = 'http:\/\/netcell.github.io\/2015\/04\/make-some-joy-on-phaser-stick\/';
-  (function() {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
-
+    <div class="fb-comments" data-href="http://netcell.github.io/2015/04/make-some-joy-on-phaser-stick/" data-numposts="5"></div>
+    
 
 </footer>
 </article>
@@ -448,6 +453,14 @@
         })
     });
     </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     
 </body>
 </html>

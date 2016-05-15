@@ -44,7 +44,7 @@
     <meta name="description" content="Romantic Programming..." />
 
     <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
     <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
 	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
@@ -197,7 +197,10 @@
     </header>
 
     <section class="post-content">
+      
+
       <div class="excerpt">I decided that enough is enough, I gave Gitlab a try. I spun up a brand new server and installed it. That wasn&#39;t a pleasant morning for me.</div>
+
       <blockquote>
 <p>This post is about setting up Gitlab with the shipped <code>nginx</code> on a shared server behind <code>apache</code> with multiple other web services running on it. That is <strong>NOT</strong> a recommended setup and you should use a dedicated VPS and <code>nginx</code> only to prevent problems. I only configured like this because the server I used was already running something else with <code>apache</code> on port 80.</p>
 </blockquote>
@@ -273,6 +276,21 @@ postgresql['shmall'] = 1048575
 
 <p>Anyway, now my team is settling down with Gitlab, and I hope nothing bad is coming :(</p>
 
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
     </section>
 
 
@@ -302,21 +320,8 @@ postgresql['shmall'] = 1048575
 
 
     
-
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'netcell';
-  var disqus_url = 'http:\/\/netcell.github.io\/2015\/08\/a-morning-in-the-gitlab\/';
-  (function() {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
-
+    <div class="fb-comments" data-href="http://netcell.github.io/2015/08/a-morning-in-the-gitlab/" data-numposts="5"></div>
+    
 
 </footer>
 </article>
@@ -377,6 +382,14 @@ postgresql['shmall'] = 1048575
         })
     });
     </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     
 </body>
 </html>

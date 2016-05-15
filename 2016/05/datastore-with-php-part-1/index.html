@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Datastore with PHP - Part 1: php-gds and datachore &middot;  @netcell" />
+    <meta property="og:site_name" content="@netcell" />
+  	<meta property="twitter:site" content="@netcell" />
+    <meta name="twitter:creator" content="@netcell">
+    <meta name="twitter:title" content=" Datastore with PHP - Part 1: php-gds and datachore &middot;  @netcell">
+  	<meta property="og:url" content="http://netcell.github.io/2016/05/datastore-with-php-part-1/" />
+
+    
+      <meta property="og:description" content="Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities" />
+      <meta name="twitter:description" content="Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities"/>
+      <meta property="og:type" content="article" />
+      
+        <meta name="twitter:card" content="summary">
+        <meta property="og:image" content="http://netcell.github.io/img/logo.jpg" />
+        <meta name="twitter:image" content="http://netcell.github.io/img/logo.jpg" />
+      
+
+      <meta property="og:article:published_time" content="2016-05-15T00:00:00Z" />
+
+      
+        <meta property="og:article:tag" content="php" />
+      
+        <meta property="og:article:tag" content="google cloud" />
+      
+        <meta property="og:article:tag" content="app engine" />
+      
+        <meta property="og:article:tag" content="datastore" />
+      
+    
+
+  <title>
+     Datastore with PHP - Part 1: php-gds and datachore &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming..." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2016/05/datastore-with-php-part-1/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
+            </li>
+        
+    </ul>
+
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+<main class="content" role="main">
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Datastore with PHP - Part 1: php-gds and datachore</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-05-15T00:00:00Z">
+            May 15, 2016
+          </time>
+          <span class="middotDivider"></span>
+          5 min read
+        
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/php/">#php</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/google-cloud/">#google cloud</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/app-engine/">#app engine</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/datastore/">#datastore</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+        
+        <div class="excerpt">
+          This is a part of series <a href="http://netcell.github.io//series/datastore-with-php">Datastore with PHP</a>.<br/>
+          <hr>
+        </div>
+      
+
+      <div class="excerpt">Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities</div>
+
+      
+
+<blockquote>
+<p><strong>Google Cloud Datastore</strong> is a NoSQL document database built for automatic scaling, high performance, and ease of application development.(<a href="https://cloud.google.com/datastore/">Google</a>)</p>
+</blockquote>
+
+<p><strong>Google Cloud Datastore</strong> is a simple <a href="http://www.sitepoint.com/sql-vs-nosql-differences/">NoSQL</a> service, and cheaper than SQL when using on <a href="https://cloud.google.com/">Google Cloud</a>, according to one of my friend. However, while he is running Java on <a href="https://cloud.google.com/appengine/">Google App Engine</a>, I am working on a PHP site and there are no official easy way to access this great solution yet.</p>
+
+<blockquote>
+<p><strong>Google Cloud Datastore</strong> is a great NoSQL solution (hosted, scalable, free up to a point), but it can be tricky (i.e. there&rsquo;s lots of code glue needed) to get even the &ldquo;Hello World&rdquo; of data persistence up and running in PHP. (<a href="https://github.com/tomwalder">Tom Walder</a>)</p>
+</blockquote>
+
+<p>There are two popular PHP libraries available on Github that help us working with Datastore: <a href="https://github.com/tomwalder/php-gds"><code>php-gds</code></a> by Tom Walder and <a href="https://github.com/pwhelan/datachore"><code>datachore</code></a> by Phillip Whelan. At the time of this post, <code>php-gds</code> is the one with most recent update, so I went with this library.</p>
+
+<h3 id="the-setup:ae4bfdb544d8db0e011806b77da11d8b">The setup</h3>
+
+<p>While the documentation of <code>php-gds</code> isn&rsquo;t great, or rather lacking one, it is not hard to figure out how to use this library. To install over Composer, just include it in the field <code>require</code> in <code>composer.json</code> as follow:
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="lineno">1 </span><span class="p">{</span>
+<span class="lineno">2 </span>    <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="lineno">3 </span>        <span class="nt">&quot;tomwalder/php-gds&quot;</span><span class="p">:</span> <span class="s2">&quot;v2.1.0&quot;</span>
+<span class="lineno">4 </span>    <span class="p">},</span>
+<span class="lineno">5 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<p>If you are running your app on App Engine, there are no setup needed, it&rsquo;s <em>plug-and-play</em>. Otherwise, you would need to follow this <a href="https://github.com/tomwalder/php-gds#getting-started">guide</a> for getting the JSON service key and this <a href="https://github.com/tomwalder/php-gds#using-the-google-php-api-and-the-json-datastore-api">guide</a> to configure the Google API Client, it&rsquo;s not rocket science, but the guide is in need of upgrade for newbies.</p>
+
+<h3 id="the-ugly:ae4bfdb544d8db0e011806b77da11d8b">The Ugly</h3>
+
+<p>While I prefer to use <code>php-gds</code> because its last update is more recent than <code>datachore</code>&rsquo;s, I prefer the approach of <code>datachore</code> in term of schemas, entities creation and query. One way to describe the difference is that <a href="http://www.programcreek.com/2011/09/what-is-the-difference-between-a-java-library-and-a-framework/"><code>php-gds</code> is a <strong>library</strong> (what you call), and <code>datachore</code> is a <strong>framework</strong> (what calls you)</a> - not a correct comparison in this case, but you get the idea.</p>
+
+<h5 id="here-is-a-flow-in-php-gds:ae4bfdb544d8db0e011806b77da11d8b">Here is a flow in <code>php-gds</code>:</h5>
+
+<ol>
+<li><p>You create a schema - <em>it&rsquo;s not structured and can be messed up</em>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="c1">// Create a schema of kind &#39;Book&#39; with 3 string fields</span>
+<span class="lineno">3 </span><span class="nv">$obj_schema</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">GDS\Schema</span><span class="p">(</span><span class="s1">&#39;Book&#39;</span><span class="p">))</span>
+<span class="lineno">4 </span>   <span class="o">-&gt;</span><span class="na">addString</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span>
+<span class="lineno">5 </span>   <span class="o">-&gt;</span><span class="na">addString</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+<span class="lineno">6 </span>   <span class="o">-&gt;</span><span class="na">addString</span><span class="p">(</span><span class="s1">&#39;isbn&#39;</span><span class="p">);</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Use that schema to build a store - <em>it&rsquo;s an unnecessary step and should be merged with schema</em>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="c1">// Build a store of that schema</span>
+<span class="lineno">3 </span><span class="nv">$obj_book_store</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GDS\Store</span><span class="p">(</span><span class="nv">$obj_schema</span><span class="p">);</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Run a method of that store to create an entity - <em>where you can accidentally add a new, indexed field which would cost you and can be prevented in the schema definition step</em>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="c1">// Create an entity from that store</span>
+<span class="lineno">3 </span><span class="nv">$obj_book</span> <span class="o">=</span> <span class="nv">$obj_book_store</span><span class="o">-&gt;</span><span class="na">createEntity</span><span class="p">([</span>
+<span class="lineno">4 </span>    <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Some Book&#39;</span><span class="p">,</span>
+<span class="lineno">5 </span>    <span class="s1">&#39;author&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;A N Other Guy&#39;</span><span class="p">,</span>
+<span class="lineno">6 </span>    <span class="s1">&#39;isbn&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;1840224313&#39;</span><span class="p">,</span>
+<span class="lineno">7 </span>    <span class="s1">&#39;published&#39;</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;-5 years&#39;</span><span class="p">)</span>
+<span class="lineno">8 </span><span class="p">]);</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Save that entity to the store - <em>for some reason save/upsert and delete are not presented as a standalone section in the Getting started section of the <code>php-gds</code> github repository, but in the example and scattered around</em>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="nv">$obj_store</span><span class="o">-&gt;</span><span class="na">upsert</span><span class="p">(</span><span class="nv">$obj_book</span><span class="p">);</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Fetch from the store - <em>why do I need to specify the kind name when I have already define it in the creation of the store?</em>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="nv">$query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM Book WHERE title = &#39;Some Book&#39;&quot;</span><span class="p">;</span>
+<span class="lineno">3 </span><span class="nv">$obj_book_store</span><span class="o">-&gt;</span><span class="na">fetchOne</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+<span class="lineno">4 </span><span class="c1">// or</span>
+<span class="lineno">5 </span><span class="nv">$obj_book_store</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+<span class="lineno">6 </span><span class="nv">$obj_book_store</span><span class="o">-&gt;</span><span class="na">fetchOne</span><span class="p">()</span>
+</code></pre></div>
+</p></li>
+</ol>
+
+<p>Other tasks are shown in the <code>php-gds</code> github repository, I have not yet understood transaction and ancestry API so I would not discussed it in this series.</p>
+
+<hr />
+
+<h5 id="now-look-at-a-flow-in-datachore:ae4bfdb544d8db0e011806b77da11d8b">Now look at a flow in <code>datachore</code>:</h5>
+
+<ol>
+<li><p>Creating schema, store in a single class definition:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno"> 1 </span><span class="cp">&lt;?php</span>
+<span class="lineno"> 2 </span><span class="k">namespace</span> <span class="nx">model</span><span class="p">;</span>
+<span class="lineno"> 3 </span><span class="k">use</span> <span class="nx">\Datachore\Type</span><span class="p">;</span>
+<span class="lineno"> 4 </span><span class="k">class</span> <span class="nc">Test</span> <span class="k">extends</span> <span class="nx">\Datachore\Model</span> <span class="p">{</span>
+<span class="lineno"> 5 </span>    <span class="k">protected</span> <span class="nv">$properties</span> <span class="o">=</span> <span class="p">[</span>
+<span class="lineno"> 6 </span>      <span class="s2">&quot;title&quot;</span>  <span class="o">=&gt;</span> <span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">,</span>
+<span class="lineno"> 7 </span>      <span class="s2">&quot;author&quot;</span> <span class="o">=&gt;</span> <span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">,</span>
+<span class="lineno"> 8 </span>      <span class="s2">&quot;isbn&quot;</span>   <span class="o">=&gt;</span> <span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">,</span>
+<span class="lineno"> 9 </span>    <span class="p">];</span>
+<span class="lineno">10 </span><span class="p">}</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Create an entity and save it directly (the same for deleting):
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="nv">$test</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">model\Test</span><span class="p">;</span>
+<span class="lineno">3 </span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">title</span>     <span class="o">=</span> <span class="s1">&#39;Some Book&#39;</span><span class="p">;</span>
+<span class="lineno">4 </span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">author</span>    <span class="o">=</span> <span class="s1">&#39;A N Other Guy&#39;</span><span class="p">;</span>
+<span class="lineno">5 </span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">isbn</span>      <span class="o">=</span> <span class="s1">&#39;1840224313&#39;</span><span class="p">;</span>
+<span class="lineno">6 </span><span class="c1">// Would not create a new indexed field</span>
+<span class="lineno">7 </span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">published</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;-5 years&#39;</span><span class="p">);</span>
+<span class="lineno">8 </span><span class="nv">$test</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</code></pre></div>
+</p></li>
+
+<li><p>Query and find the entity - GQL query builder
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="nv">$tests</span> <span class="o">=</span> <span class="nx">model\Test</span><span class="o">::</span><span class="na">where</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;Some Book&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+</code></pre></div>
+</p></li>
+</ol>
+
+<p>The approach of <code>datachore</code> is, in my opinion, much more elegant and simple to use. The library also supports more field types (including <code>Set</code>, similar to <code>List</code> type in Python version) and have a AutoIndexer to help ensuring we have an updated index.yaml which is required to use composite indexes on Google Cloud Datastore and avoid any missing index errors on the live system. <strong>However</strong>, I cannot find how to explicitly declare which field to index and which not to!</p>
+
+<hr />
+
+<h3 id="reinventing-the-wheel:ae4bfdb544d8db0e011806b77da11d8b">Reinventing the wheel</h3>
+
+<p>In this series, I am going to wrap the <code>php-gds</code> to provide some functionalities and approaches of <code>datachore</code> in this library. People normally say <em>&ldquo;don&rsquo;t reinventing the wheel&rdquo;</em>, but I am doing this anyway due to these reasons:</p>
+
+<ol>
+<li><em>Reinventing the wheel is fun</em> and I can learn a lot from it.</li>
+<li>The latest commit of <code>datachore</code> is on Dec 30, 2015 comparing to April 29, 2016 for <code>php-gds</code>&rsquo;s.</li>
+<li>Lack of explicit index declaration in <code>datachore</code>?</li>
+</ol>
+
+<p>Keep follow the path of this series below to accompany me on this journey of using Google Datastore with PHP.</p>
+
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+          be notified when this series continue and
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
+        
+        <hr/>
+        <p>
+          <a href="" id="series"></a>
+          This is a post in the <b>Datastore with PHP</b> series.<br/>
+          Other posts in this series:
+        </p>
+        
+        
+        
+        <ul class="series">
+        
+          <li>
+            May 15, 2016 -
+            <a href="http://netcell.github.io/2016/05/datastore-with-php-part-1/">Datastore with PHP - Part 1: php-gds and datachore</a>
+          </li>
+        
+        </ul>
+      
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Datastore%20with%20PHP%20-%20Part%201%3a%20php-gds%20and%20datachore&amp;url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-1%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-1%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-1%2f&amp;description=Datastore%20with%20PHP%20-%20Part%201%3a%20php-gds%20and%20datachore"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-1%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+    <div class="fb-comments" data-href="http://netcell.github.io/2016/05/datastore-with-php-part-1/" data-numposts="5"></div>
+    
+
+</footer>
+</article>
+
+</main>
+
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    
+</body>
+</html>
+

@@ -48,7 +48,7 @@
     <meta name="description" content="Romantic Programming..." />
 
     <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
 
     <link rel="shortcut icon" href="http://netcell.github.io/images/favicon.ico">
 	  <link rel="apple-touch-icon" href="http://netcell.github.io/images/apple-touch-icon.png" />
@@ -207,7 +207,10 @@
     </header>
 
     <section class="post-content">
+      
+
       <div class="excerpt">Using seperated images instead of texture atlas may cause your Phaser game to perform badly. I would be discussing how packing images in texture atlas helped save a game from crashing on older devices.</div>
+
       <p>So a few weeks ago, I was working with a group of <a href="http:\phaser.io">Phaser</a> developers on the performance of their game. They were running into a pitfall where the game ran well on desktop browser but laggy on mobile and crashed on older devices. Reasons for this problem are mostly related to the amount of display objects, garbage collection and memory consumption. <em>In this post, I would be talking about how packing the images in texture atlas helped with the memory problem.</em></p>
 
 <p><strong>Texture Atlas</strong> is a type of image packaging created by merging multiple images (called frames) into one by putting them side by side on a single canvas. Unlike normal spritesheet, which requires all the frames to be identical in dimension and presents them as a table, texture atlas uses a separated file to record the dimension and position of each frame.</p>
@@ -246,6 +249,21 @@ To create a texture atlas, you can either drag a group of images or a folder on 
 
 <p>In the case of the game I mentioned, this decreased the memory consumption from above 250Mb to around 80Mb and saved the game from crashing on older devices like iPhone 4. However, the process of changing the code from using images to atlas/spritesheet was a long, tired and time consuming process. <strong>So next time you make a game, pack your sprites from the very start, it definitely worths your overhead time.</strong></p>
 
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
     </section>
 
 
@@ -275,21 +293,8 @@ To create a texture atlas, you can either drag a group of images or a folder on 
 
 
     
-
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'netcell';
-  var disqus_url = 'http:\/\/netcell.github.io\/2015\/08\/phaser-performance-in-a-shoebox\/';
-  (function() {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
-
+    <div class="fb-comments" data-href="http://netcell.github.io/2015/08/phaser-performance-in-a-shoebox/" data-numposts="5"></div>
+    
 
 </footer>
 </article>
@@ -350,6 +355,14 @@ To create a texture atlas, you can either drag a group of images or a folder on 
         })
     });
     </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     
 </body>
 </html>
