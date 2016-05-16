@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Ligature with unsupported font in Atom &middot;  @netcell" />
+    <meta property="og:site_name" content="@netcell" />
+  	<meta property="twitter:site" content="@netcell" />
+    <meta name="twitter:creator" content="@netcell">
+    <meta name="twitter:title" content=" Ligature with unsupported font in Atom &middot;  @netcell">
+  	<meta property="og:url" content="http://netcell.github.io/2016/05/ligature-with-unsupported-font-in-atom/" />
+
+    
+      <meta property="og:description" content="Using a non-ligature font to code with ligature feature provided from another font on Atom editor" />
+      <meta name="twitter:description" content="Using a non-ligature font to code with ligature feature provided from another font on Atom editor"/>
+      <meta property="og:type" content="article" />
+      
+        <meta name="twitter:card" content="summary_large_image">
+      	<meta property="og:image" content="http://netcell.github.io//img/Screen Shot 2016-05-17 at 12.15.09 AM.png" />
+        <meta name="twitter:image" content="http://netcell.github.io//img/Screen Shot 2016-05-17 at 12.15.09 AM.png" />
+      
+
+      <meta property="og:article:published_time" content="2016-05-16T00:00:00Z" />
+
+      
+        <meta property="og:article:tag" content="atom" />
+      
+        <meta property="og:article:tag" content="ligature" />
+      
+        <meta property="og:article:tag" content="font" />
+      
+        <meta property="og:article:tag" content="editor" />
+      
+    
+
+  <title>
+     Ligature with unsupported font in Atom &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming..." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/img/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/img/apple-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2016/05/ligature-with-unsupported-font-in-atom/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
+            </li>
+        
+    </ul>
+
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+
+
+<header class="main-header post-head" style="height: 0; background: none;">
+  <img src="http://netcell.github.io//img/Screen%20Shot%202016-05-17%20at%2012.15.09%20AM.png" alt="" style="width: 100%;">
+  <nav class="main-nav overlay clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+<main class="content" role="main">
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Ligature with unsupported font in Atom</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-05-16T00:00:00Z">
+            May 16, 2016
+          </time>
+          <span class="middotDivider"></span>
+          3 min read
+        
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/atom/">#atom</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/ligature/">#ligature</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/font/">#font</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/editor/">#editor</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+
+      <div class="excerpt">Using a non-ligature font to code with ligature feature provided from another font on Atom editor</div>
+
+      
+
+<p><a href="#tldr:489acc1e53cae656307f9ec9ec83f56e">TLDR;</a>.</p>
+
+<blockquote>
+<p>In writing and typography, a ligature occurs where two or more graphemes or letters are joined as a single glyph. An example is the character æ as used in English, in which the letters a and e are joined. The common ampersand (&amp;) developed from a ligature in which the handwritten Latin letters e and t (spelling et, from the Latin for &ldquo;and&rdquo;) were combined.(<a href="https://en.wikipedia.org/wiki/Typographic_ligature">Wikipedia</a>)</p>
+</blockquote>
+
+<p>Ligature is a very useful feature for programmers since it makes the code more readable. It converts common groups of characters (like <code>===</code>, <code>=&gt;</code>, etc.) into single, readable characters. An example can be seen below, listing all ligatures of <a href="https://github.com/tonsky/FiraCode">Fira Code</a> font. A detail explanation of ligature can be found in <a href="https://medium.com/larsenwork-andreas-larsen/ligatures-coding-fonts-5375ab47ef8e#.rcjjs071c">&ldquo;Ligatures &amp; Coding&rdquo; on Medium by Andreas Larsen</a>.
+<img src="https://github.com/tonsky/FiraCode/raw/master/showcases/all_ligatures.png" alt="Fira Code" /></p>
+
+<hr />
+
+<p>Despite the usefulness of this feature, there are some cases where you cannot take advantage of ligature:</p>
+
+<ol>
+<li><strong>Sharing your work:</strong> Ligature is not the common language for everyone. While <code>===</code> is widely understands, it&rsquo;s counterparts in ligature fonts are not. It looks good, but not everyone understands it, especially ones who don&rsquo;t know about ligature.</li>
+<li><strong>Unsupported Softwares:</strong> Ligature is not a part of equality, many popular softwares including <code>iTerm 2</code>, <code>Sublime Text</code>, etc. does not support this beautiful feature. This is one of the reason I jumped from Sublime to <a href="http://atom.io">Atom</a>.</li>
+<li><strong>Unsupported Fonts:</strong> There are so many wonderful fonts have been created for the purpose of coding, i.e. <a href="http://www.typography.com/fonts/operator/overview/">Operator Mono</a>, but ligature fonts are rare and if you want ligature, you have to use them. <em>Or hack your way through!</em>
+<img src="http://cdn.typography.com/assets/images/blog/operator_ide2.png" alt="Operator Mono" />
+<center>Operator Mono - monospace font with italic script variants - would set you back $200 for the shake of exquisite coding</center></li>
+</ol>
+
+<p>In this post, I would guide you through using a non-ligature font to code with ligature feature provided from another font on Atom editor. The font will be used in the example is <em>Fira Code</em>, a ligature font modded from <em>Fira Mono</em>.</p>
+
+<hr />
+
+<h4 id="tldr:489acc1e53cae656307f9ec9ec83f56e">TLDR;</h4>
+
+<p>open your stylesheet (in Atom menu or access through the Command Palette) and insert:
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="lineno">1 </span><span class="nt">atom-text-editor</span><span class="o">:</span><span class="nd">:shadow</span> <span class="nc">.lines</span> <span class="nc">.keyword.operator</span> <span class="p">{</span>
+<span class="lineno">2 </span>  <span class="k">font-family</span><span class="o">:</span> <span class="s2">&quot;FiraCode-Light&quot;</span><span class="p">;</span>
+<span class="lineno">3 </span>  <span class="k">text</span><span class="o">-</span><span class="n">rendering</span><span class="o">:</span> <span class="n">optimizeLegibility</span><span class="p">;</span>
+<span class="lineno">4 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<p>If you use other ligature font, just replace the name in <code>font-family</code>.</p>
+
+<hr />
+
+<h4 id="explanation:489acc1e53cae656307f9ec9ec83f56e">Explanation</h4>
+
+<p>The ligatures of used in coding are of class <code>.keyword.operator</code>. So we only change the css style of this class. For some ligature fonts even have Font Awesome icons feature, you can add class <code>.string.quoted.html</code> for displaying the icons in class name of html tag too.</p>
+
+<p>Ligature is not enabled by default on Atom. To do this, we need to add:
+<div class="highlight"><pre><code class="language-css" data-lang="css">  <span class="nt">text-rendering</span><span class="o">:</span> <span class="nt">optimizeLegibility</span><span class="o">;</span>
+</code></pre></div>
+
+This is a feature of browser css engine, which Atom is - a browser app wrapped as a desktop application. This means that a similar css modification can be used for websites to display ligatures without changing the font. However, it is not recommended as stated above: <em>It looks good, but not everyone understands it, especially ones who don&rsquo;t know about ligature.</em></p>
+
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Ligature%20with%20unsupported%20font%20in%20Atom&amp;url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fligature-with-unsupported-font-in-atom%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fligature-with-unsupported-font-in-atom%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fligature-with-unsupported-font-in-atom%2f&amp;description=Ligature%20with%20unsupported%20font%20in%20Atom"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fligature-with-unsupported-font-in-atom%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+    <div class="fb-comments" data-href="http://netcell.github.io/2016/05/ligature-with-unsupported-font-in-atom/" data-numposts="5" data-width="100%"></div>
+    
+
+</footer>
+</article>
+
+</main>
+
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Atom on @netcell</title>
+    <link>http://netcell.github.io/tags/atom/</link>
+    <description>Recent content in Atom on @netcell</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>All rights reserved - 2016</copyright>
+    <lastBuildDate>Mon, 16 May 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://netcell.github.io/tags/atom/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ligature with unsupported font in Atom</title>
+      <link>http://netcell.github.io/2016/05/ligature-with-unsupported-font-in-atom/</link>
+      <pubDate>Mon, 16 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://netcell.github.io/2016/05/ligature-with-unsupported-font-in-atom/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;#tldr:489acc1e53cae656307f9ec9ec83f56e&#34;&gt;TLDR;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;In writing and typography, a ligature occurs where two or more graphemes or letters are joined as a single glyph. An example is the character æ as used in English, in which the letters a and e are joined. The common ampersand (&amp;amp;) developed from a ligature in which the handwritten Latin letters e and t (spelling et, from the Latin for &amp;ldquo;and&amp;rdquo;) were combined.(&lt;a href=&#34;https://en.wikipedia.org/wiki/Typographic_ligature&#34;&gt;Wikipedia&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ligature is a very useful feature for programmers since it makes the code more readable. It converts common groups of characters (like &lt;code&gt;===&lt;/code&gt;, &lt;code&gt;=&amp;gt;&lt;/code&gt;, etc.) into single, readable characters. An example can be seen below, listing all ligatures of &lt;a href=&#34;https://github.com/tonsky/FiraCode&#34;&gt;Fira Code&lt;/a&gt; font. A detail explanation of ligature can be found in &lt;a href=&#34;https://medium.com/larsenwork-andreas-larsen/ligatures-coding-fonts-5375ab47ef8e#.rcjjs071c&#34;&gt;&amp;ldquo;Ligatures &amp;amp; Coding&amp;rdquo; on Medium by Andreas Larsen&lt;/a&gt;.
+&lt;img src=&#34;https://github.com/tonsky/FiraCode/raw/master/showcases/all_ligatures.png&#34; alt=&#34;Fira Code&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Despite the usefulness of this feature, there are some cases where you cannot take advantage of ligature:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Sharing your work:&lt;/strong&gt; Ligature is not the common language for everyone. While &lt;code&gt;===&lt;/code&gt; is widely understands, it&amp;rsquo;s counterparts in ligature fonts are not. It looks good, but not everyone understands it, especially ones who don&amp;rsquo;t know about ligature.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unsupported Softwares:&lt;/strong&gt; Ligature is not a part of equality, many popular softwares including &lt;code&gt;iTerm 2&lt;/code&gt;, &lt;code&gt;Sublime Text&lt;/code&gt;, etc. does not support this beautiful feature. This is one of the reason I jumped from Sublime to &lt;a href=&#34;http://atom.io&#34;&gt;Atom&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unsupported Fonts:&lt;/strong&gt; There are so many wonderful fonts have been created for the purpose of coding, i.e. &lt;a href=&#34;http://www.typography.com/fonts/operator/overview/&#34;&gt;Operator Mono&lt;/a&gt;, but ligature fonts are rare and if you want ligature, you have to use them. &lt;em&gt;Or hack your way through!&lt;/em&gt;
+&lt;img src=&#34;http://cdn.typography.com/assets/images/blog/operator_ide2.png&#34; alt=&#34;Operator Mono&#34; /&gt;
+&lt;center&gt;Operator Mono - monospace font with italic script variants - would set you back $200 for the shake of exquisite coding&lt;/center&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this post, I would guide you through using a non-ligature font to code with ligature feature provided from another font on Atom editor. The font will be used in the example is &lt;em&gt;Fira Code&lt;/em&gt;, a ligature font modded from &lt;em&gt;Fira Mono&lt;/em&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;tldr:489acc1e53cae656307f9ec9ec83f56e&#34;&gt;TLDR;&lt;/h4&gt;
+
+&lt;p&gt;open your stylesheet (in Atom menu or access through the Command Palette) and insert:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;atom-text-editor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;:shadow&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.lines&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.keyword.operator&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;font-family&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;FiraCode-Light&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rendering&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;optimizeLegibility&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;If you use other ligature font, just replace the name in &lt;code&gt;font-family&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;explanation:489acc1e53cae656307f9ec9ec83f56e&#34;&gt;Explanation&lt;/h4&gt;
+
+&lt;p&gt;The ligatures of used in coding are of class &lt;code&gt;.keyword.operator&lt;/code&gt;. So we only change the css style of this class. For some ligature fonts even have Font Awesome icons feature, you can add class &lt;code&gt;.string.quoted.html&lt;/code&gt; for displaying the icons in class name of html tag too.&lt;/p&gt;
+
+&lt;p&gt;Ligature is not enabled by default on Atom. To do this, we need to add:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;  &lt;span class=&#34;nt&#34;&gt;text-rendering&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;optimizeLegibility&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+This is a feature of browser css engine, which Atom is - a browser app wrapped as a desktop application. This means that a similar css modification can be used for websites to display ligatures without changing the font. However, it is not recommended as stated above: &lt;em&gt;It looks good, but not everyone understands it, especially ones who don&amp;rsquo;t know about ligature.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

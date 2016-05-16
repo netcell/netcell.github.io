@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" Datastore with PHP - Part 2: Reinventing the wheel &middot;  @netcell" />
+    <meta property="og:site_name" content="@netcell" />
+  	<meta property="twitter:site" content="@netcell" />
+    <meta name="twitter:creator" content="@netcell">
+    <meta name="twitter:title" content=" Datastore with PHP - Part 2: Reinventing the wheel &middot;  @netcell">
+  	<meta property="og:url" content="http://netcell.github.io/2016/05/datastore-with-php-part-2/" />
+
+    
+      <meta property="og:description" content="Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities" />
+      <meta name="twitter:description" content="Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities"/>
+      <meta property="og:type" content="article" />
+      
+        <meta name="twitter:card" content="summary">
+        <meta property="og:image" content="http://netcell.github.io/img/logo.jpg" />
+        <meta name="twitter:image" content="http://netcell.github.io/img/logo.jpg" />
+      
+
+      <meta property="og:article:published_time" content="2016-05-16T00:00:00Z" />
+
+      
+        <meta property="og:article:tag" content="php" />
+      
+        <meta property="og:article:tag" content="google cloud" />
+      
+        <meta property="og:article:tag" content="app engine" />
+      
+        <meta property="og:article:tag" content="datastore" />
+      
+    
+
+  <title>
+     Datastore with PHP - Part 2: Reinventing the wheel &middot;  @netcell
+  </title>
+
+    <meta name="description" content="Romantic Programming..." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+
+    <link rel="shortcut icon" href="http://netcell.github.io/img/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://netcell.github.io/img/apple-icon.png" />
+
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/nav.css" />
+    <link rel="stylesheet" type="text/css" href="http://netcell.github.io/css/monokai.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
+    
+        <link href="http://eepurl.com/bYfnUP" rel="alternate" type="application/rss+xml" title="@netcell" />
+    
+    <meta name="generator" content="Hugo 0.15" />
+
+    <link rel="canonical" href="http://netcell.github.io/2016/05/datastore-with-php-part-2/" />
+
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62565835-4', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    
+
+    
+</head>
+<body class="nav-closed">
+
+  <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        
+
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="/">Blog</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/netify">Netify</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/phaser-inspector">Phaser Inspector</a>
+            </li>
+        
+            
+            <li class="nav-opened" role="presentation">
+                <a href="http://netcell.github.io/nine-patch-phaser-plugin">Phaser Nine Patch</a>
+            </li>
+        
+        <div class="seperator nav-opened"></div>
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://github.com/netcell" target="_blank">
+                    Github
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://twitter.com/netcell" target="_blank">
+                    Twitter
+                </a>
+            </li>
+        
+        
+            <li class="nav-opened" role="presentation">
+                <a href="https://facebook.com/netcell" target="_blank">
+                    Facebook
+                </a>
+            </li>
+        
+    </ul>
+
+    
+    <a class="subscribe-button icon-feed" href="http://eepurl.com/bYfnUP">Subscribe</a> </div>
+    
+</div>
+<span class="nav-cover"></span>
+
+
+ <div class="site-wrapper">
+
+
+
+
+
+
+<header class="main-header post-head no-cover">
+  <nav class="main-nav clearfix">
+
+
+  
+      <a class="blog-logo" href="http://netcell.github.io/"><img src="http://netcell.github.io/img/logo.jpg" alt="Home" /></a>
+  
+  
+      <a class="menu-button" href="#"><span class="burger">&#9776;</span><span class="word">Menu</span></a>
+  
+  </nav>
+</header>
+
+
+<main class="content" role="main">
+
+  <article class="post post">
+
+    <header class="post-header">
+        <h1 class="post-title">Datastore with PHP - Part 2: Reinventing the wheel</h1>
+        <small></small>
+
+        <section class="post-meta">
+        
+          <time class="post-date" datetime="2016-05-16T00:00:00Z">
+            May 16, 2016
+          </time>
+          <span class="middotDivider"></span>
+          5 min read
+        
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/php/">#php</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/google-cloud/">#google cloud</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/app-engine/">#app engine</a></span>
+         
+          <span class="middotDivider"></span>
+          <span class="post-tag small"><a href="http://netcell.github.io/tags/datastore/">#datastore</a></span>
+         
+        </section>
+    </header>
+
+    <section class="post-content">
+      
+        
+        <div class="excerpt">
+          This is a part of series <a href="http://netcell.github.io//series/datastore-with-php">Datastore with PHP</a>.<br/>
+          <hr>
+        </div>
+      
+
+      <div class="excerpt">Using Google Cloud Datastore for a PHP application with the php-gds package and wrapping the library to make it more structured and provides more functionalities</div>
+
+      
+
+<blockquote>
+<p>In this series, I am going to wrap the <code>php-gds</code> to provide some functionalities and approaches of <code>datachore</code> in this library. (<a href="/2016/05/datastore-with-php-part-1/">Part 1</a>)</p>
+</blockquote>
+
+<p>In this post, we will be building a class that:</p>
+
+<ol>
+<li>Is auto-mapped to the kind (category) in datastore based on the class name.</li>
+<li>Generate the schema with a declarative properties/fields list.</li>
+</ol>
+
+<p>Since each instance of the class would have the same <code>kind</code>, <code>schema</code> and <code>store</code>, we can apply <a href="http://www.phptherightway.com/pages/Design-Patterns.html">singleton pattern</a> to store the results of the initial process as follow:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno"> 1 </span><span class="cp">&lt;?php</span>
+<span class="lineno"> 2 </span><span class="k">class</span> <span class="nc">Model</span> <span class="p">{</span>
+<span class="lineno"> 3 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_store</span><span class="p">;</span>
+<span class="lineno"> 4 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_schema</span><span class="p">;</span>
+<span class="lineno"> 5 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_kind</span><span class="p">;</span>
+<span class="lineno"> 6 </span>
+<span class="lineno"> 7 </span>  <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getStore</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno"> 8 </span>  	<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_store</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="lineno"> 9 </span>      <span class="k">static</span><span class="o">::</span><span class="nv">$_store</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GDS\Store</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="na">getSchema</span><span class="p">());</span>
+<span class="lineno">10 </span>  	<span class="p">}</span>
+<span class="lineno">11 </span>  	<span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$_store</span><span class="p">;</span>
+<span class="lineno">12 </span>  <span class="p">}</span>
+<span class="lineno">13 </span>
+<span class="lineno">14 </span>  <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getSchema</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">15 </span>  	<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="lineno">16 </span>      <span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GDS\Schema</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="na">getKind</span><span class="p">());</span>
+<span class="lineno">17 </span>      <span class="c1">//...</span>
+<span class="lineno">18 </span>  	<span class="p">}</span>
+<span class="lineno">19 </span>  	<span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span><span class="p">;</span>
+<span class="lineno">20 </span>  <span class="p">}</span>
+<span class="lineno">21 </span>
+<span class="lineno">22 </span>  <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getKind</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">23 </span>  	<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_kind</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="lineno">24 </span>      <span class="c1">// $classname = ...</span>
+<span class="lineno">25 </span>  	<span class="p">}</span>
+<span class="lineno">26 </span>  	<span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$_kind</span><span class="p">;</span>
+<span class="lineno">27 </span>  <span class="p">}</span>
+</code></pre></div>
+
+
+<p>However, it should be noticed that this pattern is not supposed to be used for this matter. If you inherit/extend the class all the new classes would be pointed to the same <code>kind</code>, <code>schema</code> and <code>store</code>. You would need to explicitly declare the <code>protected static</code> properties every single time:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="k">class</span> <span class="nc">Test</span> <span class="k">extends</span> <span class="nx">Model</span> <span class="p">{</span>
+<span class="lineno">3 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_store</span><span class="p">;</span>
+<span class="lineno">4 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_schema</span><span class="p">;</span>
+<span class="lineno">5 </span>  <span class="k">protected</span> <span class="k">static</span> <span class="nv">$_kind</span><span class="p">;</span>
+<span class="lineno">6 </span>  <span class="c1">//...</span>
+<span class="lineno">7 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<p>Due to my limitation of php knowledge, I have yet to solve this problem yet. This is pending for an update from my future me :)</p>
+
+<hr />
+
+<blockquote>
+<p><strong>IMPORTANT:</strong> From here one, I would skip these declaration, but they are required if you would like to use my implementation without any modification of your own to fix it. If you have any idea how to fix it, please let me know at <a href="mailto:anhnt.fami@gmail.com">anhnt.fami@gmail.com</a> or leave a comment on this post. Thank you very much.</p>
+</blockquote>
+
+<hr />
+
+<h4 id="getting-the-kind:f60704edea9aabf2f979c65ba5da89f5">Getting the kind</h4>
+
+<blockquote>
+<p>Each Datastore entity is of a particular kind, which categorizes the entity for the purpose of queries: for instance, a task list application might represent each task to complete with an entity of kind Task. (<a href="https://cloud.google.com/datastore/docs/concepts/entities#kinds_and_identifiers">Google</a>)</p>
+</blockquote>
+
+<p>We do this by invoking the method <code>get_called_class()</code> of php to retrieve the class name and create a schema with that name.
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="c1">//...</span>
+<span class="lineno">3 </span><span class="nv">$classname</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
+<span class="lineno">4 </span><span class="nv">$schema</span>    <span class="o">=</span> <span class="k">new</span> <span class="nx">GDS\Schema</span><span class="p">(</span><span class="nv">$classname</span><span class="p">);</span>
+<span class="lineno">5 </span><span class="c1">//...</span>
+</code></pre></div>
+</p>
+
+<p>However if you have a model class <code>A</code> in namespace <code>B/C</code>, the method <code>get_called_class()</code> would return <code>B/C/A</code>. This may fit with some people, but to simplify, I extract only the class name, without namespace, like so:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="nv">$classname</span> <span class="o">=</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$classname</span><span class="p">,</span> <span class="nb">strrpos</span><span class="p">(</span><span class="nv">$classname</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+</code></pre></div>
+</p>
+
+<p>In full:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getKind</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno">3 </span>  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_kind</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="lineno">4 </span>    <span class="nv">$classname</span> <span class="o">=</span> <span class="nb">get_called_class</span><span class="p">();</span>
+<span class="lineno">5 </span>    <span class="k">static</span><span class="o">::</span><span class="nv">$_kind</span> <span class="o">=</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$classname</span><span class="p">,</span> <span class="nb">strrpos</span><span class="p">(</span><span class="nv">$classname</span><span class="p">,</span> <span class="s1">&#39;\\&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+<span class="lineno">6 </span>  <span class="p">}</span>
+<span class="lineno">7 </span>  <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$_kind</span><span class="p">;</span>
+<span class="lineno">8 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<hr />
+
+<h4 id="declarative-schema-definition:f60704edea9aabf2f979c65ba5da89f5">Declarative schema definition</h4>
+
+<p>I take the syntax of <code>datachore</code> to implement my solution. A defined static property <code>$properties</code>, mapping a property name to a type, will be used to generate the schema. The static method <code>getSchema()</code> (see above) loops through <code>$properties</code> and applies appropriate method of <code>GDS\Schema</code> class.</p>
+
+<p>To do this, we would need a class <code>Type</code> to declare all the types that we can handle, Here is a brief overview, the full code is not relevant and can be accessed at my <a href="https://gist.github.com/1fc8baa53b91cd64b8e281d324afa5cf">gist</a>:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno"> 1 </span><span class="cp">&lt;?php</span>
+<span class="lineno"> 2 </span><span class="k">class</span> <span class="nc">Type</span> <span class="p">{</span>
+<span class="lineno"> 3 </span>  <span class="k">const</span> <span class="no">String</span>     <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="lineno"> 4 </span>  <span class="k">const</span> <span class="no">Integer</span>    <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="lineno"> 5 </span>  <span class="k">const</span> <span class="no">Datetime</span>   <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="lineno"> 6 </span>  <span class="k">const</span> <span class="no">Float</span>      <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="lineno"> 7 </span>  <span class="k">const</span> <span class="no">Boolean</span>    <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="lineno"> 8 </span>  <span class="k">const</span> <span class="no">StringList</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="lineno"> 9 </span>  <span class="k">const</span> <span class="no">Geopoint</span>   <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="lineno">10 </span>  <span class="k">const</span> <span class="no">Json</span>       <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+<span class="lineno">11 </span>  <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">setProperty</span><span class="p">(</span><span class="nv">$obj_schema</span><span class="p">,</span> <span class="nv">$property</span><span class="p">,</span> <span class="nv">$type</span><span class="p">,</span> <span class="nv">$index</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">12 </span>    <span class="k">switch</span> <span class="p">(</span><span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno">13 </span>      <span class="c1">//...</span>
+<span class="lineno">14 </span>    <span class="p">}</span>
+<span class="lineno">15 </span>  <span class="p">}</span>
+<span class="lineno">16 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<p>For constants with values <code>1</code> to <code>7</code>, these are the types that <code>php-gds</code> supports. The last constant, <code>Json</code>, is a new type that I would be handling in the upcoming post of this series, allowing us to save, read and update json fields in datastore.</p>
+
+<p>The static method <code>setProperty()</code> takes 4 variables:</p>
+
+<ol>
+<li><code>$obj_schema</code> - a <code>GDS\Schema</code> instance, the schema of a Model class.</li>
+<li><code>$property</code> - the property name.</li>
+<li><code>$type</code> - the type of the property.</li>
+<li><code>$index</code> - a boolean value, indicating if the property should be indexed.</li>
+</ol>
+
+<p>and run methods accordingly to complete the definition of <code>$obj_schema</code>.</p>
+
+<p>A class extending Model should have a <em>protected static property</em> as follow:
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno">1 </span><span class="cp">&lt;?php</span>
+<span class="lineno">2 </span><span class="k">protected</span> <span class="k">static</span> <span class="nv">$properties</span> <span class="o">=</span> <span class="p">[</span>
+<span class="lineno">3 </span>  <span class="s2">&quot;title&quot;</span>  <span class="o">=&gt;</span> <span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">,</span>
+<span class="lineno">4 </span>  <span class="s2">&quot;author&quot;</span> <span class="o">=&gt;</span> <span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">,</span>
+<span class="lineno">5 </span>  <span class="s2">&quot;isbn&quot;</span>   <span class="o">=&gt;</span> <span class="p">[</span><span class="nx">Type</span><span class="o">:</span><span class="nx">String</span><span class="p">],</span>
+<span class="lineno">6 </span><span class="p">];</span>
+</code></pre></div>
+</p>
+
+<p>Here <code>isbn</code> field has a type of an array with only one element, which is <code>Type:String</code>, meaning <code>isbn</code> is a string and it should be indexed. This is just a way to declare and can be altered for a better implementation.</p>
+
+<p>With <code>Type</code> class, we can now complete the <code>getSchema()</code> method of class <code>Model</code> by looping through <code>static::$properties</code> and run <code>Type::setProperty()</code> on each of the property:</p>
+
+<p><div class="highlight"><pre><code class="language-php" data-lang="php"><span class="lineno"> 1 </span><span class="cp">&lt;?php</span>
+<span class="lineno"> 2 </span><span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">getSchema</span><span class="p">()</span> <span class="p">{</span>
+<span class="lineno"> 3 </span>  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+<span class="lineno"> 4 </span>    <span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GDS\Schema</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="na">getKind</span><span class="p">());</span>
+<span class="lineno"> 5 </span>    <span class="k">foreach</span> <span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$properties</span> <span class="k">as</span> <span class="nv">$property</span> <span class="o">=&gt;</span> <span class="nv">$type</span><span class="p">)</span> <span class="p">{</span>
+<span class="lineno"> 6 </span>      <span class="nx">Type</span><span class="o">::</span><span class="na">setProperty</span><span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span><span class="p">,</span> <span class="nv">$property</span><span class="p">,</span> <span class="nv">$type</span><span class="p">);</span>
+<span class="lineno"> 7 </span>    <span class="p">}</span>
+<span class="lineno"> 8 </span>  <span class="p">}</span>
+<span class="lineno"> 9 </span>  <span class="k">return</span> <span class="k">static</span><span class="o">::</span><span class="nv">$_schema</span><span class="p">;</span>
+<span class="lineno">10 </span><span class="p">}</span>
+</code></pre></div>
+</p>
+
+<hr />
+
+<p>Next time on this series: implementing entity creation and access with Model constructor and php magic methods, along with proxying query access and performance from <code>php-gds</code> store and implementing Json field type. Stay tune and be awesome :)</p>
+
+
+      <hr>
+      <p>If you find this post interesting, please
+        
+          <a href="http://eepurl.com/bYfnUP">subscribe</a>
+        
+        to
+        
+          be notified when this series continue and
+        
+        receive updates on new posts.
+        Follow me on
+        <a href="http://twitter.com/netcell">twitter</a> and
+        <a href="http://github.com/netcell">github</a>.
+      </p>
+
+      
+        
+        <hr/>
+        <p>
+          <a href="" id="series"></a>
+          This is a post in the <b>Datastore with PHP</b> series.<br/>
+          Other posts in this series:
+        </p>
+        
+        
+        
+        <ul class="series">
+        
+          <li>
+            May 16, 2016 -
+            <a href="http://netcell.github.io/2016/05/datastore-with-php-part-2/">Datastore with PHP - Part 2: Reinventing the wheel</a>
+          </li>
+        
+          <li>
+            May 15, 2016 -
+            <a href="http://netcell.github.io/2016/05/datastore-with-php-part-1/">Datastore with PHP - Part 1: php-gds and datachore</a>
+          </li>
+        
+        </ul>
+      
+    </section>
+
+
+  <footer class="post-footer">
+
+    
+<section class="share">
+
+  <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=Datastore%20with%20PHP%20-%20Part%202%3a%20Reinventing%20the%20wheel&amp;url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-2%2f"
+      onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+  </a>
+  <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-2%2f"
+      onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+  </a>
+  <a class="icon-pinterest" style="font-size: 1.4em" href="http://pinterest.com/pin/create/button/?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-2%2f&amp;description=Datastore%20with%20PHP%20-%20Part%202%3a%20Reinventing%20the%20wheel"
+      onclick="window.open(this.href, 'pinterest-share','width=580,height=296');return false;">
+      <span class="hidden">Pinterest</span>
+  </a>
+  <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fnetcell.github.io%2f2016%2f05%2fdatastore-with-php-part-2%2f"
+     onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+  </a>
+</section>
+
+
+
+    
+    <div class="fb-comments" data-href="http://netcell.github.io/2016/05/datastore-with-php-part-2/" data-numposts="5" data-width="100%"></div>
+    
+
+</footer>
+</article>
+
+</main>
+
+
+    <footer class="site-footer post-footer clearfix">
+        
+        <figure class="author-image">
+            <a class="img" href="http://netcell.github.io/" style="background-image: url(http://netcell.github.io/img/logo.jpg)"><span class="hidden">netcell's Picture</span></a>
+        </figure>
+        
+
+        
+
+
+
+
+
+<section class="author">
+  <h4><a href="http://netcell.github.io/">netcell</a></h4>
+  
+  <p>Developer, jack of all trades and master of some.</p>
+  
+  <div class="author-meta">
+    <span class="author-location icon-location">Hanoi, Vietnam</span>
+    <span class="author-link icon-link"><a href="http://netcell.github.io">http://netcell.github.io</a></span>
+  </div>
+</section>
+
+
+        <section class="copyright"><a href="">@netcell</a> All rights reserved - 2016</section>
+        
+    </footer>
+    </div>
+    <div class="back-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://netcell.github.io/js/index.js"></script>
+    <script>
+    $(document).ready(function() {
+        var offset   = 250;
+        var duration = 300;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > offset) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+    </script>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=607861089368916";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    
+</body>
+</html>
+
