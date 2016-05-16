@@ -50,6 +50,10 @@
 &lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;font-family&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;FiraCode-Light&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rendering&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;optimizeLegibility&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;atom-text-editor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;:shadow&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.lines&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.cursor-line&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.keyword.operator&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rendering&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;auto&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;8 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
@@ -66,6 +70,13 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 This is a feature of browser css engine, which Atom is - a browser app wrapped as a desktop application. This means that a similar css modification can be used for websites to display ligatures without changing the font. However, it is not recommended as stated above: &lt;em&gt;It looks good, but not everyone understands it, especially ones who don&amp;rsquo;t know about ligature.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;As noted in Andreas Larsen&amp;rsquo;s &lt;a href=&#34;https://medium.com/larsenwork-andreas-larsen/ligatures-coding-fonts-5375ab47ef8e#.rcjjs071c&#34;&gt;article&lt;/a&gt;, ligature is also harder to edit, since multiple characters are combined in one. Therefore I disable ligature on the line where the cursor in currently on. In atom, that line has a class of &lt;code&gt;.cursor-line&lt;/code&gt;.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-css&#34; data-lang=&#34;css&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;atom-text-editor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nd&#34;&gt;:shadow&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.lines&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.cursor-line&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;.keyword.operator&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;text&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rendering&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;auto&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
 </description>
     </item>
     

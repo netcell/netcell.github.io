@@ -232,6 +232,10 @@
 <span class="lineno">2 </span>  <span class="k">font-family</span><span class="o">:</span> <span class="s2">&quot;FiraCode-Light&quot;</span><span class="p">;</span>
 <span class="lineno">3 </span>  <span class="k">text</span><span class="o">-</span><span class="n">rendering</span><span class="o">:</span> <span class="n">optimizeLegibility</span><span class="p">;</span>
 <span class="lineno">4 </span><span class="p">}</span>
+<span class="lineno">5 </span>
+<span class="lineno">6 </span><span class="nt">atom-text-editor</span><span class="o">:</span><span class="nd">:shadow</span> <span class="nc">.lines</span> <span class="nc">.cursor-line</span> <span class="nc">.keyword.operator</span> <span class="p">{</span>
+<span class="lineno">7 </span>  <span class="k">text</span><span class="o">-</span><span class="n">rendering</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="lineno">8 </span><span class="p">}</span>
 </code></pre></div>
 </p>
 
@@ -248,6 +252,13 @@
 </code></pre></div>
 
 This is a feature of browser css engine, which Atom is - a browser app wrapped as a desktop application. This means that a similar css modification can be used for websites to display ligatures without changing the font. However, it is not recommended as stated above: <em>It looks good, but not everyone understands it, especially ones who don&rsquo;t know about ligature.</em></p>
+
+<p>As noted in Andreas Larsen&rsquo;s <a href="https://medium.com/larsenwork-andreas-larsen/ligatures-coding-fonts-5375ab47ef8e#.rcjjs071c">article</a>, ligature is also harder to edit, since multiple characters are combined in one. Therefore I disable ligature on the line where the cursor in currently on. In atom, that line has a class of <code>.cursor-line</code>.
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="lineno">1 </span><span class="nt">atom-text-editor</span><span class="o">:</span><span class="nd">:shadow</span> <span class="nc">.lines</span> <span class="nc">.cursor-line</span> <span class="nc">.keyword.operator</span> <span class="p">{</span>
+<span class="lineno">2 </span>  <span class="k">text</span><span class="o">-</span><span class="n">rendering</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="lineno">3 </span><span class="p">}</span>
+</code></pre></div>
+</p>
 
 
       <hr>
